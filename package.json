@@ -1,0 +1,23 @@
+{
+  "name": "tak-engine",
+  "version": "0.3.0",
+  "description": "Low Level Tak Engine",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "cucumber-js --format json:features/cucumber.json",
+    "build": "tsc --project ./src/tsconfig.json",
+    "build-test": "tsc --project ./features/tsconfig.json"
+  },
+  "author": "Tobias Klauenberg",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.2",
+    "@types/cucumber": "^4.0.7",
+    "chai": "^4.2.0",
+    "cucumber": "^5.1.0",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3",
+    "typescript-tslint-plugin": "^0.5.4"
+  },
+  "dependencies": {}
+}

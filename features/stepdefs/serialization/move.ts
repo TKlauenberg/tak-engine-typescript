@@ -1,0 +1,31 @@
+import { expect } from "chai";
+import { Given, Then, When } from "cucumber";
+import { Direction, Move, MoveTypes, Place, serialize } from "../../../src/Move";
+
+Given("a place move with a {stoneTypeByName} at {pos}", function (stoneType, position) {
+    const move: Place = {
+        action: MoveTypes.Place,
+        stoneType,
+        position,
+    };
+    this.move = move;
+});
+
+Given("a move Action on {pos} with {int} stones into {direction} and {string}", function (position: string, amount: number, direction: Direction, drops: string) {
+    const move: Move = {
+        action: MoveTypes.Move,
+        amount,
+        direction,
+        drops: drops.split("").map((x) => parseInt(x)),
+        position,
+    };
+    this.move = move;
+});
+
+When("I serialize the move", function () {
+    this.string = serialize(this.move);
+});
+
+Then("the string matches {string}", function (value) {
+    expect(this.string).equals(value);
+});
