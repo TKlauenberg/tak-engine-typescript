@@ -25,6 +25,9 @@ export class Square implements ICloneable<Square> {
     public static getTop(tile: Stone[]) {
         return tile[tile.length - 1];
     }
+    public static isEmpty(tile: Stone[]) {
+        return tile.length === 0;
+    }
     /**
      * Test if stones can be dropped on square
      * @param stones Stone[] stones which are tested
@@ -57,7 +60,7 @@ export class Square implements ICloneable<Square> {
     public static drop(position: string, boardSize: number, tile: Stone[], ...stones: Stone[]): Stone[] {
         const [canDrop, reason] = Square.canDropStones(tile, ...stones);
         if (canDrop) {
-            if (Square.getTop(tile) !== undefined && Square.getTop(tile).type === StoneType.STANDING) {
+            if (!Square.isEmpty(tile) && Square.getTop(tile).type === StoneType.STANDING) {
                 // flattening wall
                 Square.getTop(tile).type = StoneType.FLAT;
             }
