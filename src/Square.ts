@@ -8,9 +8,9 @@ export enum Edge {
     Right = 8,
 }
 
-export class Tile implements ICloneable<Tile> {
+export class Square implements ICloneable<Square> {
     public get top() {
-        return Tile.getTop(this._stones);
+        return Square.getTop(this._stones);
     }
     public get isEmpty() {
         return this._stones.length === 0;
@@ -33,7 +33,7 @@ export class Tile implements ICloneable<Tile> {
         if (tile.length === 0) {
             return [true];
         }
-        switch (Tile.getTop(tile).type) {
+        switch (Square.getTop(tile).type) {
             case StoneType.FLAT: return [true];
             case StoneType.STANDING:
                 if (stones.length === 1) {
@@ -46,19 +46,20 @@ export class Tile implements ICloneable<Tile> {
                     return [false, new Error("Can only flatten a wall with one capstone")];
                 }
             case StoneType.CAP: return [false, new Error("Cannot move a stone onto a capstone")];
+            default: return [false, new Error("Top tile is not a stone")];
         }
     }
     /**
-     * Drop new stones on square
+     * Drop new stones on tile
      * @param stones stones to be dropped
      * @returns Stone[] new Tile stones
      */
     public static drop(position: string, boardSize: number, tile: Stone[], ...stones: Stone[]): Stone[] {
-        const [canDrop, reason] = Tile.canDropStones(tile, ...stones);
+        const [canDrop, reason] = Square.canDropStones(tile, ...stones);
         if (canDrop) {
-            if (Tile.getTop(tile) !== undefined && Tile.getTop(tile).type === StoneType.STANDING) {
+            if (Square.getTop(tile) !== undefined && Square.getTop(tile).type === StoneType.STANDING) {
                 // flattening wall
-                Tile.getTop(tile).type = StoneType.FLAT;
+                Square.getTop(tile).type = StoneType.FLAT;
             }
             const resultStack = [...tile, ...stones];
             resultStack.forEach((stone, index) => {
@@ -103,23 +104,23 @@ export class Tile implements ICloneable<Tile> {
      * @param stones Stone[] stones which are tested
      */
     public canDrop(...stones: Stone[]): [true] | [false, Error] {
-        return Tile.canDropStones(this._stones, ...stones);
+        return Square.canDropStones(this._stones, ...stones);
     }
     /**
      * Drop new stones on square
      * @param stones stones to be dropped
      */
     public drop(...stones: Stone[]) {
-        this._stones = Tile.drop(this.position, this.boardSize, this._stones, ...stones);
+        this._stones = Square.drop(this.position, this.boardSize, this._stones, ...stones);
     }
     /**
      * take stones from square
      * @param count amount of stones to take
      */
     public take(count: number) {
-        return Tile.take(this._stones, count);
+        return Square.take(this._stones, count);
     }
     public clone() {
-        return new Tile(this.position, this.boardSize, ...this._stones);
+        return new Square(this.position, this.boardSize, ...this._stones);
     }
 }
