@@ -1,0 +1,19 @@
+{
+    "include": [
+        "./src/**/*.ts"
+    ],
+    "compilerOptions": {
+        "allowJs": false,
+        "target": "es6",
+        "sourceMap": true,
+        "strict": true,
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "lib": [
+            "es2015",
+            "es2015.generator"
+        ],
+        "incremental": true
+    }
+}

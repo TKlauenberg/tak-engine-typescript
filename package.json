@@ -11,13 +11,14 @@
   "author": "Tobias Klauenberg",
   "license": "ISC",
   "devDependencies": {
-    "@types/chai": "^4.2.2",
-    "@types/cucumber": "^4.0.7",
+    "@types/chai": "^4.2.9",
+    "@types/cucumber": "^6.0.1",
+    "@typescript-eslint/eslint-plugin": "^2.21.0",
+    "@typescript-eslint/parser": "^2.21.0",
     "chai": "^4.2.0",
-    "cucumber": "^5.1.0",
-    "tslint": "^5.20.0",
-    "typescript": "^3.6.3",
-    "typescript-tslint-plugin": "^0.5.4"
+    "cucumber": "^6.0.5",
+    "eslint": "^6.8.0",
+    "typescript": "^3.8.2"
   },
   "dependencies": {}
 }
