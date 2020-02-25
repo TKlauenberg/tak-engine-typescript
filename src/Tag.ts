@@ -6,7 +6,7 @@ export class Tag {
         return this.name.toLowerCase();
     }
     public static parse(tagString: string): [false, ParsingError] | [true, Tag] {
-        const parts = tagString.match(grammar.tag_grouped);
+        const parts = grammar.tagGrouped.exec(tagString);
         if (!parts) {
             return [false, new ParsingError("Tag could not be parsed", "Tag", tagString)];
         }

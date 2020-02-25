@@ -6,13 +6,12 @@ import { Action, parse as parseMove } from "./Move";
 import { Tag } from "./Tag";
 
 export function parse(text: string): Result<Game> {
-    const file = text.match(grammar.ptn_grouped);
+    const file = grammar.ptnGrouped.exec(text);
     if (!file) { return [false, new Error("not a valid PTN file")]; }
     const headerText = file[1];
     const body = file[3];
-    const suffix = file[4] || "";
 
-    const headerLines = headerText.match(grammar.tag)!;
+    const headerLines = grammar.tag.exec(headerText)!;
     const tags: Tag[] = [];
     for (const headerLine of headerLines) {
         const [result, tag] = Tag.parse(headerLine);
@@ -54,7 +53,7 @@ export function parse(text: string): Result<Game> {
     // todo parse comments
     // parse Moves
     if (body) {
-        let moveLines: RegExpMatchArray | undefined = body.match(grammar.move_grouped)!;
+        let moveLines: RegExpMatchArray | undefined = grammar.moveGrouped.exec(body)!;
         let line = game.moveCount;
         const moves: Action[] = [];
         // if we have a tps string, it could be that we have only one move in the first
@@ -69,7 +68,7 @@ export function parse(text: string): Result<Game> {
             } else {
                 return [false, move as Error];
             }
-            moveLines = moveLines[10] ? moveLines[10].match(grammar.move_grouped)! : undefined;
+            moveLines = moveLines[10] ? grammar.moveGrouped.exec(moveLines[10])! : undefined;
         }
         while (moveLines !== undefined) {
             const currentLine = Number.parseInt(moveLines[1].trim()[0]);
@@ -88,7 +87,7 @@ export function parse(text: string): Result<Game> {
             } else {
                 return [false, seccondMove as Error];
             }
-            moveLines = moveLines[10] ? moveLines[10].match(grammar.move_grouped)! : undefined;
+            moveLines = moveLines[10] ? grammar.moveGrouped.exec(moveLines[10])! : undefined;
             line++;
         }
         for (const move of moves) {

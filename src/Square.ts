@@ -1,6 +1,7 @@
 import { ICloneable } from "./interfaces";
 import { Stone, StoneType } from "./Stone";
 
+
 export enum Edge {
     Top = 1,
     Bottom = 2,
@@ -9,18 +10,14 @@ export enum Edge {
 }
 
 export class Square implements ICloneable<Square> {
-    public get top() {
-        return Square.getTop(this._stones);
-    }
-    public get isEmpty() {
-        return this._stones.length === 0;
-    }
-    public get hasStones() {
-        return this._stones.length > 0;
-    }
-
-    public get stones() {
-        return this._stones;
+    position: string;
+    stones: Stone[];
+    #boardSize: number;
+    public constructor(position: string, boardSize: number, ...stones: Stone[]) {
+        this.position = position;
+        this.stones = stones;
+        this.#boardSize = boardSize;
+        this.stones.forEach((stone, index) => { stone.movable = index > stones.length - boardSize - 1; });
     }
     public static getTop(tile: Stone[]) {
         return tile[tile.length - 1];
@@ -92,38 +89,40 @@ export class Square implements ICloneable<Square> {
             return stones;
         }
     }
-    public position: string;
-    // tslint:disable-next-line: variable-name
-    private _stones: Stone[];
-    private boardSize: number;
-    constructor(position: string, boardSize: number, ...stones: Stone[]) {
-        this.position = position;
-        this._stones = stones;
-        this.boardSize = boardSize;
-        this._stones.forEach((stone, index) => { stone.movable = index > stones.length - boardSize - 1; });
+    public get top() {
+        return Square.getTop(this.stones);
+    }
+    public get isEmpty() {
+        return this.stones.length === 0;
+    }
+    public get hasStones() {
+        return this.stones.length > 0;
+    }
+    public getStones() {
+        return this.stones;
     }
     /**
      * Test if stones can be dropped on square
      * @param stones Stone[] stones which are tested
      */
     public canDrop(...stones: Stone[]): [true] | [false, Error] {
-        return Square.canDropStones(this._stones, ...stones);
+        return Square.canDropStones(this.stones, ...stones);
     }
     /**
      * Drop new stones on square
      * @param stones stones to be dropped
      */
     public drop(...stones: Stone[]) {
-        this._stones = Square.drop(this.position, this.boardSize, this._stones, ...stones);
+        this.stones = Square.drop(this.position, this.#boardSize, this.stones, ...stones);
     }
     /**
      * take stones from square
      * @param count amount of stones to take
      */
     public take(count: number) {
-        return Square.take(this._stones, count);
+        return Square.take(this.stones, count);
     }
     public clone() {
-        return new Square(this.position, this.boardSize, ...this._stones);
+        return new Square(this.position, this.#boardSize, ...this.stones);
     }
 }

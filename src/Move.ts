@@ -1,8 +1,8 @@
-import { Tile } from ".";
 import { Board } from "./Board";
 import { grammar } from "./grammer";
 import { Result } from "./interfaces";
 import { PlayerInfo } from "./Player";
+import { Square } from "./Square";
 import { Stone, StoneType } from "./Stone";
 
 export enum MoveTypes {
@@ -28,13 +28,23 @@ export interface Move {
     drops: number[];
 }
 
+function parseDirection(direction: string) {
+    switch (direction) {
+        case "+": return Direction.Up;
+        case "-": return Direction.Down;
+        case "<": return Direction.Left;
+        case ">": return Direction.Right;
+        default: throw new Error(`cannot parse Direction "${direction}"`);
+    }
+}
+
 export type Action = Place | Move;
 export function parse(ptnMove: string): Result<Action> {
-    const type = ptnMove.match(grammar.ply_grouped)!;
+    const type = grammar.plyGrouped.exec(ptnMove)!;
     if (type[2]) {
         // Move
         const action = MoveTypes.Move;
-        const parts = type[2].match(grammar.slide_grouped)!;
+        const parts = grammar.slideGrouped.exec(type[2])!;
         const amount = Number.parseInt(parts[1]) || 1;
         const position = parts[2];
         const direction = parseDirection(parts[3]);
@@ -50,7 +60,7 @@ export function parse(ptnMove: string): Result<Action> {
     } else if (type[3]) {
         // Place
         const action = MoveTypes.Place;
-        const parts = type[3].match(grammar.place_grouped)!;
+        const parts = grammar.placeGrouped.exec(type[3])!;
         const stoneType: StoneType = parts[1] as StoneType || StoneType.FLAT;
         const position = parts[2];
         const move: Action = {
@@ -63,16 +73,6 @@ export function parse(ptnMove: string): Result<Action> {
     return [false, new Error("move could not be parsed")];
 }
 
-function parseDirection(direction: string) {
-    switch (direction) {
-        case "+": return Direction.Up;
-        case "-": return Direction.Down;
-        case "<": return Direction.Left;
-        case ">": return Direction.Right;
-        default: throw new Error(`cannot parse Direction "${direction}"`);
-    }
-}
-
 export function serialize(action: Action) {
     if (action.action === MoveTypes.Place) {
         const typeString = action.stoneType === StoneType.FLAT ? "" : action.stoneType;
@@ -82,7 +82,7 @@ export function serialize(action: Action) {
     }
 }
 
-export function excecuteMove<T extends Tile[][]>(move: Action, board: T, player: PlayerInfo): Result<T> {
+export function excecuteMove<T extends Square[][]>(move: Action, board: T, player: PlayerInfo): Result<T> {
     if (move.action === MoveTypes.Place) {
         const stone = player.getStone(move.stoneType);
         if (stone !== undefined) {

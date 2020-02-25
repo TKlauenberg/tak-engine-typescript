@@ -21,7 +21,7 @@ export interface Stone {
     player: Player;
     movable: boolean;
     position: {
-        square: string,
-        stack: number,
+        square: string;
+        stack: number;
     };
 }

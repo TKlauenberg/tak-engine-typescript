@@ -1,8 +1,8 @@
-import { GameResult, Tile } from ".";
+import { GameResult } from ".";
 import { Board, GameStones, getStoneCount } from "./Board";
 import { Action, excecuteMove } from "./Move";
 import { Player, PlayerInfo, StoneBag } from "./Player";
-import { StoneType } from "./Stone";
+import { Square } from "./Square";
 import { parse as parseTps, TPS } from "./tps";
 
 export interface GameOptions {
@@ -13,7 +13,7 @@ export interface GameOptions {
 }
 
 export class Game {
-    public static hasGameEnded(board: Tile[][], currentPlayer: Player, player1: StoneBag | PlayerInfo, player2: StoneBag | PlayerInfo): GameResult | false {
+    public static hasGameEnded(board: Square[][], currentPlayer: Player, player1: StoneBag | PlayerInfo, player2: StoneBag | PlayerInfo): GameResult | false {
         const roads = Board.getRoads(board);
         // road win
         if (roads.length > 0) {
@@ -46,11 +46,11 @@ export class Game {
         }
         return false;
     }
-    public static getTps(board: Tile[][], currentPlayer: Player, moveCount: number) {
+    public static getTps(board: Square[][], currentPlayer: Player, moveCount: number) {
         const player = currentPlayer === Player.One ? "1" : "2";
         return `${Board.getTps(board)} ${player} ${moveCount}`;
     }
-    public static executeMove(board: Tile[][], currentPlayer: Player, moveCount: number, move: Action, player1: PlayerInfo | StoneBag, player2: PlayerInfo | StoneBag) {
+    public static executeMove(board: Square[][], currentPlayer: Player, moveCount: number, move: Action, player1: PlayerInfo | StoneBag, player2: PlayerInfo | StoneBag) {
         // first action is always a place of an enemy stone
         // move.action is checked cause of typescript type checking
         let player = currentPlayer;

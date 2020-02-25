@@ -10,6 +10,7 @@
         "module": "commonjs",
         "allowSyntheticDefaultImports": true,
         "declaration": true,
+        "outDir": "lib",
         "lib": [
             "es2015",
             "es2015.generator"

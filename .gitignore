@@ -1,6 +1,8 @@
 node_modules
 docs
-*.js
+lib
+features/**/*.js
+src/**/*.js
 *.js.map
 *.d.ts
 **/tsconfig.tsbuildinfo

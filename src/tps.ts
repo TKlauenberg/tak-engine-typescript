@@ -1,47 +1,26 @@
-import { Board, getStoneCount } from "./Board";
+import { Board } from "./Board";
 import { ParsingError } from "./Errors";
 import { grammar } from "./grammer";
 import { Result } from "./interfaces";
-import { IPlayerInfo, Player, PlayerInfo } from "./Player";
+import { Player, PlayerInfo } from "./Player";
+import { Square } from "./Square";
 import { parseStoneType, Stone, StoneType } from "./Stone";
-import { Tile } from "./Tile";
 
 export interface TPS {
-    board: Tile[][];
+    board: Square[][];
     player: Player;
     move: number;
 }
-export function parse(tpsString: string, boardSize: number, player1: PlayerInfo, player2: PlayerInfo): Result<TPS> {
-    const parts = tpsString.match(grammar.tps_grouped)!;
-    if (!parts[1]) {
-        return [false, new ParsingError(`TPS didn't match grammer`, "TPS", "")];
-    } else {
-        if (parts[3] === "" || parts[5] === "") {
-            return [false, new Error("Missing next Player or Movecount from TPS")];
-        }
-        const [boardResult, board] = parseBoard(parts[1], boardSize, player1, player2);
-        if (boardResult) {
-            const tps: TPS = {
-                board: board as Board,
-                player: parseInt(parts[3]) === 1 ? Player.One : Player.Two,
-                move: parseInt(parts[5]),
-            };
-            return [true, tps];
-        } else {
-            return [false, board as Error];
-        }
-    }
-}
 const startColumnCharCode = "a".charCodeAt(0);
-function parseBoard(tpsPart: string, boardSize: number, player1: PlayerInfo, player2: PlayerInfo): Result<Tile[][]> {
+function parseBoard(tpsPart: string, boardSize: number, player1: PlayerInfo, player2: PlayerInfo): Result<Square[][]> {
     let rest = tpsPart;
     // rows will be added top to bottom because tps starts at top row
-    const board: Tile[][] = [];
+    const board: Square[][] = [];
     let currentRow = boardSize;
     let currentPosition = startColumnCharCode;
     board.unshift([]);
     while (rest !== "") {
-        const part = rest.match(grammar.col_grouped)!;
+        const part = grammar.colGrouped.exec(rest)!;
         rest = rest.slice(part[0].length);
         if (part) {
             if (part[1] !== undefined && part[1] !== "") {
@@ -50,7 +29,7 @@ function parseBoard(tpsPart: string, boardSize: number, player1: PlayerInfo, pla
                 const countSquares = Number.parseInt(part[1][1]);
                 for (let i = 0; i < countSquares; i++) {
                     // use zero index cause the we always add a new first line
-                    board[0].push(new Tile(`${String.fromCharCode(currentPosition)}${currentRow}`, boardSize));
+                    board[0].push(new Square(`${String.fromCharCode(currentPosition)}${currentRow}`, boardSize));
                     currentPosition++;
                 }
             }
@@ -82,7 +61,7 @@ function parseBoard(tpsPart: string, boardSize: number, player1: PlayerInfo, pla
                     stones.push(stone);
                 }
                 stones[stones.length - 1].type = topStoneType;
-                board[0].push(new Tile(position, boardSize, ...stones));
+                board[0].push(new Square(position, boardSize, ...stones));
             }
             if (part[1] === "" && part[2] === "") {
                 return [false, new Error("could not parse tps")];
@@ -103,4 +82,25 @@ function parseBoard(tpsPart: string, boardSize: number, player1: PlayerInfo, pla
         return [false, new Error(`wrong board size one one line`)];
     }
     return [true, new Board(boardSize, board)];
+}
+export function parse(tpsString: string, boardSize: number, player1: PlayerInfo, player2: PlayerInfo): Result<TPS> {
+    const parts = grammar.tpsGrouped.exec(tpsString)!;
+    if (!parts[1]) {
+        return [false, new ParsingError(`TPS didn't match grammer`, "TPS", "")];
+    } else {
+        if (parts[3] === "" || parts[5] === "") {
+            return [false, new Error("Missing next Player or Movecount from TPS")];
+        }
+        const [boardResult, board] = parseBoard(parts[1], boardSize, player1, player2);
+        if (boardResult) {
+            const tps: TPS = {
+                board: board as Board,
+                player: parseInt(parts[3]) === 1 ? Player.One : Player.Two,
+                move: parseInt(parts[5]),
+            };
+            return [true, tps];
+        } else {
+            return [false, board as Error];
+        }
+    }
 }

@@ -3,7 +3,6 @@ features
 .vscode
 *.ts
 *.js.map
-tslint.json
 tsconfig.json
 Jenkinsfile
 Readme.md

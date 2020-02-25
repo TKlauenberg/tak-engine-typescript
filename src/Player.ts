@@ -1,6 +1,5 @@
 import { GameStones } from "./Board";
 import { Stone, StoneType } from "./Stone";
-import { range } from "./util";
 
 export enum Player {
     One = 1,
@@ -10,6 +9,7 @@ export interface StoneBag {
     F: Stone[];
     C: Stone[];
 }
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IPlayerInfo {
     name: string;
     player: Player;

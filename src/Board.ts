@@ -1,9 +1,8 @@
-import { ICloneable } from "./interfaces";
-import { Result } from "./interfaces";
+import { ICloneable, Result } from "./interfaces";
 import { Direction } from "./Move";
 import { Player } from "./Player";
+import { Square } from "./Square";
 import { StoneType } from "./Stone";
-import { Tile } from "./Tile";
 import { filterUndefined, range } from "./util";
 
 const stoneCounts = new Map([
@@ -23,8 +22,8 @@ enum Edge {
 const TopToBottom = Edge.Top | Edge.Bottom;
 const LeftToRight = Edge.Left | Edge.Right;
 
-type RoadTile = Tile & { edges: Edge };
-export interface GameStones { F: number; C: number; }
+type RoadTile = Square & { edges: Edge };
+export interface GameStones { F: number; C: number }
 export function getStoneCount(size: number): Result<GameStones> {
     if (stoneCounts.has(size)) {
         return [true, stoneCounts.get(size)!];
@@ -35,27 +34,27 @@ export function getStoneCount(size: number): Result<GameStones> {
 
 const startRowCharCode = "a".charCodeAt(0);
 
-export class Board extends Array<Tile[]> implements ICloneable<Board> {
+export class Board extends Array<Square[]> implements ICloneable<Board> {
     public get size() {
         return this.length;
     }
     public get tps() {
         return Board.getTps(this);
     }
-    public static getTps(board: Tile[][]) {
+    public static getTps(board: Square[][]) {
         const rows = [];
         for (const row of board) {
             let countEmpty = 0;
             const parts = [];
-            for (const tile of row) {
-                if (tile.stones.length === 0) {
+            for (const square of row) {
+                if (square.stones.length === 0) {
                     countEmpty++;
                 } else {
                     if (countEmpty > 0) {
                         parts.push(`x${countEmpty}`);
                     }
-                    const tileTps = tile.stones.map((x) => x.player === Player.One ? "1" : "2").reduce((x, y) => x + y, "");
-                    const stoneType = tile.top.type === StoneType.FLAT ? "" : tile.top.type;
+                    const tileTps = square.stones.map((x) => x.player === Player.One ? "1" : "2").reduce((x, y) => x + y, "");
+                    const stoneType = square.top.type === StoneType.FLAT ? "" : square.top.type;
                     parts.push(tileTps + stoneType);
                 }
             }
@@ -70,13 +69,13 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
     public get roads() {
         return Board.getRoads(this);
     }
-    public static getRoads(board: Tile[][]) {
+    public static getRoads(board: Square[][]) {
         const bottom = board[0];
         // indexes from 1 to size - 2 so we don't get tiles multiple times
         const indexes = Array.from(range(1, board.length - 1));
         const left = indexes.map((x) => board[x][0]);
         const borderTiles = bottom.concat(left)
-            .filter((x) => x.top !== undefined && x.top!.type !== StoneType.STANDING);
+            .filter((x) => x.top !== undefined && x.top.type !== StoneType.STANDING);
         return borderTiles
             .map((x) => Board.findRoadsFromTile(board, x))
             .reduce((x, y) => x.concat(y), []);
@@ -87,9 +86,9 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
     public get score() {
         return [Board.getScore(this, Player.One), Board.getScore(this, Player.Two)];
     }
-    public static getScore(board: Tile[][], player: Player): number;
-    public static getScore(board: Tile[][]): [number, number];
-    public static getScore(board: Tile[][], player?: Player) {
+    public static getScore(board: Square[][], player: Player): number;
+    public static getScore(board: Square[][]): [number, number];
+    public static getScore(board: Square[][], player?: Player) {
         if (player === undefined) {
             return [Board.getScore(board, Player.One), Board.getScore(board, Player.Two)];
         } else {
@@ -104,18 +103,18 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
             return filtered.length;
         }
     }
-    public static isBoardFull(board: Tile[][]) {
+    public static isBoardFull(board: Square[][]) {
         return board.every((x) => x.every((y) => y.hasStones));
     }
-    public static clone(board: Tile[][]) {
+    public static clone(board: Square[][]) {
         const newBoard = board.map((x) => x.map((y) => y.clone()));
         return newBoard;
     }
-    public static getSquare(board: Tile[][], position: string) {
+    public static getSquare(board: Square[][], position: string) {
         const [row, column] = Board.getPosition(position);
         return board[row][column];
     }
-    public static getNeighbourSquare(board: Tile[][], position: string, direction: Direction, length: number = 1) {
+    public static getNeighbourSquare(board: Square[][], position: string, direction: Direction, length = 1) {
         let [row, column] = Board.getPosition(position);
         switch (direction) {
             case Direction.Down:
@@ -133,7 +132,7 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
         }
         return board[row][column];
     }
-    public static getAllNeighbourSquares(board: Tile[][], position: string): Tile[] {
+    public static getAllNeighbourSquares(board: Square[][], position: string): Square[] {
         const [row, column] = Board.getPosition(position);
         const up = board[row + 1] === undefined ? undefined : board[row + 1][column];
         const down = board[row - 1] === undefined ? undefined : board[row - 1][column];
@@ -148,7 +147,7 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
         const row = Number.parseInt(b) - 1;
         return [row, column];
     }
-    private static getEdges(board: Tile[][], position: string) {
+    private static getEdges(board: Square[][], position: string) {
         const [x, y] = Board.getPosition(position);
         let edge: Edge = Edge.None;
         if (x === 0) {
@@ -163,7 +162,7 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
         }
         return edge;
     }
-    private static findRoadsFromTile(board: Tile[][], tile: Tile, road: RoadTile[] = []): RoadTile[][] {
+    private static findRoadsFromTile(board: Square[][], tile: Square, road: RoadTile[] = []): RoadTile[][] {
         const edges = Board.getEdges(board, tile.position);
         const roadTile = tile as RoadTile;
         roadTile.edges = edges;
@@ -190,7 +189,7 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
             return roads;
         }
     }
-    constructor(size: number, board?: Tile[][]) {
+    constructor(size: number, board?: Square[][]) {
         if (board === undefined) {
             super(size);
             for (let i = 0; i < this.length; i++) {
@@ -198,7 +197,7 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
                 const rowIndex = String.fromCharCode(startRowCharCode + i);
                 this[i] = row;
                 for (let j = 0; j < row.length; j++) {
-                    const column = new Tile(`${rowIndex}${j + 1}`, size);
+                    const column = new Square(`${rowIndex}${j + 1}`, size);
                     row[j] = column;
                 }
             }
@@ -213,10 +212,10 @@ export class Board extends Array<Tile[]> implements ICloneable<Board> {
     public getSquare(position: string) {
         return Board.getSquare(this, position);
     }
-    public getNeighbourSquare(position: string, direction: Direction, length: number = 1) {
+    public getNeighbourSquare(position: string, direction: Direction, length = 1) {
         return Board.getNeighbourSquare(this, position, direction, length);
     }
-    public getAllNeighbourSquares(position: string): Tile[] {
+    public getAllNeighbourSquares(position: string): Square[] {
         return Board.getAllNeighbourSquares(this, position);
     }
 }

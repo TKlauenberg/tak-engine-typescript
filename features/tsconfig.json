@@ -14,15 +14,6 @@
             "es2015.generator",
             "dom"
         ],
-        "incremental": true,
-        "plugins": [
-            {
-                "name": "typescript-tslint-plugin",
-                "alwaysShowRuleFailuresAsWarnings": false,
-                "ignoreDefinitionFiles": true,
-                "configFile": "./tslint.json",
-                "suppressWhileTypeErrorsPresent": false
-            }
-        ]
+        "incremental": true
     }
 }
