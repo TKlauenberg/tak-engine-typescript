@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Given, Then, When } from "cucumber";
-import { Action, Move, MoveTypes, parse } from "../../../src/Move";
+import { Action, Move, MoveType, parse } from "../../../src/Move";
 
 Given("A the move {string}", function (move: string) {
     this.moveString = move;
@@ -14,12 +14,12 @@ When("I parse the PTN move", function () {
 
 Then("The Move is a place action", function () {
     const move: Action = this.move;
-    expect(move.action).to.equal(MoveTypes.Place);
+    expect(move.action).to.equal(MoveType.Place);
 });
 
 Then("The Move is a move action", function () {
     const move: Action = this.move;
-    expect(move.action).to.equal(MoveTypes.Move);
+    expect(move.action).to.equal(MoveType.Move);
 });
 
 Then("the position is {pos}", function (pos) {

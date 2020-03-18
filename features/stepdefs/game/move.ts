@@ -1,82 +1,93 @@
 import { expect } from "chai";
 import { TableDefinition, Then, When } from "cucumber";
-import { Direction, Game } from "../../../src";
-import { Action, MoveTypes, parse as parseMove } from "../../../src/Move";
+import { Direction, Game, StoneType } from "../../../src";
+import { Action, MoveType, parse as parseMove } from "../../../src/Move";
 
-When("I place a {stoneTypeByName} at {pos}", function (stoneTypeByName, pos) {
-    const move: Action = {
-        action: MoveTypes.Place,
+function createPlaceAction(stoneType: StoneType, pos: string): Action {
+    return {
+        action: MoveType.Place,
         position: pos,
-        stoneType: stoneTypeByName,
+        stoneType: stoneType,
     };
-    const game: Game = this.game;
+}
+
+When("the user places a {stoneTypeByName} at {pos}", function (stoneTypeByName, pos) {
+    const move: Action = createPlaceAction(stoneTypeByName, pos);
+    (this.game as Game).execute(move);
+});
+
+When("the user tries to place a {stoneTypeByName} at {pos}", function (stoneTypeByName, pos) {
+    const move: Action = createPlaceAction(stoneTypeByName, pos);
     try {
-        game.execute(move);
+        (this.game as Game).execute(move);
     } catch (err) {
         this.error = err;
     }
 });
 
-When("I move one stone from {pos} {direction}", function (position, direction: Direction) {
-    const move: Action = {
-        action: MoveTypes.Move,
-        amount: 1,
+function createMoveAction(position: string, direction: Direction, amount: number, drops: number[]): Action {
+    return {
+        action: MoveType.Move,
+        amount: amount,
         direction,
-        drops: [1],
+        drops: drops,
         position,
     };
+}
+
+When("the user moves one stone from {pos} {direction}", function (position, direction: Direction) {
+    const move: Action = createMoveAction(position, direction, 1, [1]);
+    (this.game as Game).execute(move);
+});
+
+When("the user tries to move one stone from {pos} {direction}", function (position, direction: Direction) {
+    const move: Action = createMoveAction(position, direction, 1, [1]);
     try {
         (this.game as Game).execute(move);
-    } catch (error) {
-        this.error = error;
+    } catch (err) {
+        this.error = err;
     }
 });
 
-When("I move {int} stones from {pos} {direction}, dropping one stone at each square", function (amount: number, position: string, direction: Direction) {
+When("the user moves {int} stones from {pos} {direction}, dropping one stone at each square", function (amount: number, position: string, direction: Direction) {
     const drops: number[] = [];
     for (let i = 0; i < amount; i++) {
         drops.push(1);
     }
-    const move: Action = {
-        action: MoveTypes.Move,
-        amount,
-        direction,
-        drops,
-        position,
-    };
+    const move: Action = createMoveAction(position, direction, amount, drops);
+    (this.game as Game).execute(move);
+});
+
+When("the user tries to move {int} stones from {pos} {direction}, dropping one stone at each square", function (amount: number, position: string, direction: Direction) {
+    const drops: number[] = [];
+    for (let i = 0; i < amount; i++) {
+        drops.push(1);
+    }
+    const move: Action = createMoveAction(position, direction, amount, drops);
     try {
         (this.game as Game).execute(move);
-    } catch (error) {
-        this.error = error;
+    } catch (err) {
+        this.error = err;
     }
 });
 
-When("I move {int} stones from {pos} {direction} with all stones", function (amount: number, position: string, direction: Direction) {
-    const move: Action = {
-        action: MoveTypes.Move,
-        amount,
-        direction,
-        drops: [amount],
-        position,
-    };
+When("the user tries to move {int} stones from {pos} {direction} with all stones", function (amount: number, position: string, direction: Direction) {
+    const move: Action = createMoveAction(position, direction, amount, [amount]);
     try {
         (this.game as Game).execute(move);
-    } catch (error) {
-        this.error = error;
+    } catch (err) {
+        this.error = err;
     }
 });
-When("I execute these moves", function (dataTable: TableDefinition) {
+
+When("the user executes these moves", function (dataTable: TableDefinition) {
     const movesStrings: any = dataTable.raw();
     for (const moveString of movesStrings) {
         const [parseSuccessfull, move] = parseMove(moveString[0]);
         if (!parseSuccessfull) {
             throw new Error("Error in feature file! move could not be parsed");
         } else {
-            try {
-                (this.game as Game).execute(move as Action);
-            } catch (error) {
-                this.error = error;
-            }
+            (this.game as Game).execute(move as Action);
         }
     }
 });

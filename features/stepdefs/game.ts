@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { defineStep, Given, TableDefinition, Then } from "cucumber";
-import { Game, Stone, StoneType, Tile } from "../../src";
+import { Game, Stone, StoneType, Square } from "../../src";
 import { Player } from "../../src/Player";
 
 // Given and When step
-defineStep("I initialize a game with the parameters", function (dataTable: TableDefinition) {
+defineStep("the user initializes a game with the parameters", function (dataTable: TableDefinition) {
     const options: any = dataTable.rowsHash();
     for (const key of Object.keys(options)) {
         if (options[key].match(/^[0-9,]+$/)) {
@@ -31,7 +31,8 @@ Then("On {pos} should be a stack with stones {string}", function (pos: string, s
 function checkStack(game: Game, position: string, ...stack: Stone[]) {
     const square = game.board.getSquare(position);
     square.stones.forEach((x, i) => {
-        expect(x).to.include(stack[i]);
+        // debug sting because then the chai-js output has more details
+        expect(x).to.include(stack[i], "debug");
     });
     // expect(square.stones).to.deep.equal(stack);
 }
@@ -71,17 +72,17 @@ Then("On {pos} is a {stone}", function (pos, stone: Stone) {
     const game: Game = this.game;
     const square = game.board.getSquare(pos);
     expect(square.stones).to.have.length(1);
-    expect(square.top).to.include(stone);
+    expect(square.top).to.include(stone,"debug");
 });
 
 Then("The board is empty", function () {
     const game: Game = this.game;
-    const board: Tile[][] = game.board;
+    const board: Square[][] = game.board;
     const isEmpty = board.every((x) => x.every((y) => y.stones.length === 0));
     expect(isEmpty).to.be.true;
 });
 
-Then("I should get an error", function () {
+Then("the user should get an error", function () {
     expect(this.error).to.not.be.undefined;
 });
 

@@ -5,7 +5,7 @@ import { PlayerInfo } from "./Player";
 import { Square } from "./Square";
 import { Stone, StoneType } from "./Stone";
 
-export enum MoveTypes {
+export enum MoveType {
     Place = "Place",
     Move = "Move",
 }
@@ -16,12 +16,12 @@ export enum Direction {
     Right = ">",
 }
 export interface Place {
-    action: MoveTypes.Place;
+    action: MoveType.Place;
     position: string;
     stoneType: StoneType;
 }
 export interface Move {
-    action: MoveTypes.Move;
+    action: MoveType.Move;
     position: string;
     amount: number;
     direction: Direction;
@@ -43,7 +43,7 @@ export function parse(ptnMove: string): Result<Action> {
     const type = grammar.plyGrouped.exec(ptnMove)!;
     if (type[2]) {
         // Move
-        const action = MoveTypes.Move;
+        const action = MoveType.Move;
         const parts = grammar.slideGrouped.exec(type[2])!;
         const amount = Number.parseInt(parts[1]) || 1;
         const position = parts[2];
@@ -59,7 +59,7 @@ export function parse(ptnMove: string): Result<Action> {
         return [true, move];
     } else if (type[3]) {
         // Place
-        const action = MoveTypes.Place;
+        const action = MoveType.Place;
         const parts = grammar.placeGrouped.exec(type[3])!;
         const stoneType: StoneType = parts[1] as StoneType || StoneType.FLAT;
         const position = parts[2];
@@ -74,7 +74,7 @@ export function parse(ptnMove: string): Result<Action> {
 }
 
 export function serialize(action: Action) {
-    if (action.action === MoveTypes.Place) {
+    if (action.action === MoveType.Place) {
         const typeString = action.stoneType === StoneType.FLAT ? "" : action.stoneType;
         return `${typeString}${action.position}`;
     } else {
@@ -83,12 +83,9 @@ export function serialize(action: Action) {
 }
 
 export function excecuteMove<T extends Square[][]>(move: Action, board: T, player: PlayerInfo): Result<T> {
-    if (move.action === MoveTypes.Place) {
+    if (move.action === MoveType.Place) {
         const stone = player.getStone(move.stoneType);
         if (stone !== undefined) {
-            if (move.stoneType === StoneType.STANDING) {
-                stone.type = StoneType.STANDING;
-            }
             const square = Board.getSquare(board, move.position);
             if (square.stones.length > 0) {
                 return [false, new Error("Cannot place a stone on a non empty board")];
@@ -114,15 +111,13 @@ export function excecuteMove<T extends Square[][]>(move: Action, board: T, playe
             const dropStones: Stone[] = [];
             for (let x = 0; x < move.drops[i]; x++) {
                 const stone = stones.shift();
-                if (stone === undefined) {
-                    return [false, new Error("There aren't enough stones")];
-                }
-                dropStones.push(stone);
+                // no check needed for undefined because otherwithe the square.take method throws an error
+                dropStones.push(stone!);
             }
             if (dropSquare.canDrop(...dropStones)) {
                 dropSquare.drop(...dropStones);
             } else {
-                return [false, new Error("Cannot Drop Stones")];
+                return [false, new Error(`Cannot drop stones on ${move.position}`)];
             }
         }
     }

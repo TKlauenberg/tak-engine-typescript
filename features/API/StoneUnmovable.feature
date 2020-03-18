@@ -5,9 +5,9 @@ Feature: StoneUnmovable
     when I have only the information about the Stone
 
     Scenario: Stone Position after taking Moves
-        Given I initialize a game with the parameters
+        Given the user initializes a game with the parameters
             | size | 5 |
-        When I execute these moves
+        When the user executes these moves
             | a1  |
             | b1  |
             | b2  |
@@ -24,8 +24,8 @@ Feature: StoneUnmovable
         Then all unmovable stones should have the information movable -> false
 
     Scenario: Imovable Stones
-        Given I initialize a game with the parameters
-            | size | 5                         |
+        Given the user initializes a game with the parameters
+            | size | 5                           |
             | tps  | 12121212,x4/x5/x5/x5/x5 1 1 |
         Then all unmovable stones should have the information movable -> false
 

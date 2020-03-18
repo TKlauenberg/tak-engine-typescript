@@ -1,4 +1,4 @@
-export { Move, MoveTypes, Direction } from "./Move";
+export { Move, MoveType, Direction } from "./Move";
 export { Board, getStoneCount, GameStones } from "./Board";
 export { Game, GameOptions } from "./Game";
 export { Stone, StoneType } from "./Stone";

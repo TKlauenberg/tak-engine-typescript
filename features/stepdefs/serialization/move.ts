@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { Given, Then, When } from "cucumber";
-import { Direction, Move, MoveTypes, Place, serialize } from "../../../src/Move";
+import { Direction, Move, MoveType, Place, serialize } from "../../../src/Move";
 
 Given("a place move with a {stoneTypeByName} at {pos}", function (stoneType, position) {
     const move: Place = {
-        action: MoveTypes.Place,
+        action: MoveType.Place,
         stoneType,
         position,
     };
@@ -13,7 +13,7 @@ Given("a place move with a {stoneTypeByName} at {pos}", function (stoneType, pos
 
 Given("a move Action on {pos} with {int} stones into {direction} and {string}", function (position: string, amount: number, direction: Direction, drops: string) {
     const move: Move = {
-        action: MoveTypes.Move,
+        action: MoveType.Move,
         amount,
         direction,
         drops: drops.split("").map((x) => parseInt(x)),
