@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { defineStep, Given, TableDefinition, Then } from "cucumber";
-import { Game, Stone, StoneType, Square } from "../../src";
-import { Player } from "../../src/Player";
+import { defineStep, TableDefinition, Then } from "cucumber";
+import { Game, Square, Stone, StoneType } from "../../lib";
+import { Player } from "../../lib/Player";
 
 // Given and When step
 defineStep("the user initializes a game with the parameters", function (dataTable: TableDefinition) {

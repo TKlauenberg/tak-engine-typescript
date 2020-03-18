@@ -1,5 +1,5 @@
 import { defineParameterType, Transform } from "cucumber";
-import { parseStoneType, StoneType } from "../../../src/Stone";
+import { parseStoneType, StoneType } from "../../../lib/Stone";
 const stoneType: Transform = {
     name: "stoneType",
     regexp: /[FSC]/,

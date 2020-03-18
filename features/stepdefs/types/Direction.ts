@@ -1,5 +1,5 @@
 import { defineParameterType, Transform } from "cucumber";
-import { Direction } from "../../../src";
+import { Direction } from "../../../lib";
 
 const direction: Transform = {
     name: "direction",

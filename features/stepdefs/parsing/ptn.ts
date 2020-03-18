@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Then, When } from "cucumber";
-import { parse } from "../../../src/ptn";
+import { parse } from "../../../lib/ptn";
 
 When("I parse the PTN file", function (docString) {
   const [result, gameOrError] = parse(docString);

@@ -1,5 +1,5 @@
 import { defineParameterType, Transform } from "cucumber";
-import { Player } from "../../../src/Player";
+import { Player } from "../../../lib/Player";
 
 export function getPlayerByColor(color: string) {
     return color === "white" ? Player.One : Player.Two;

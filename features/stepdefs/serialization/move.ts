@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Given, Then, When } from "cucumber";
-import { Direction, Move, MoveType, Place, serialize } from "../../../src/Move";
+import { Direction, Move, MoveType, Place, serialize } from "../../../lib/Move";
 
 Given("a place move with a {stoneTypeByName} at {pos}", function (stoneType, position) {
     const move: Place = {

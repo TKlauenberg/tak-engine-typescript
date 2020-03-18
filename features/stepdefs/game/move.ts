@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { TableDefinition, Then, When } from "cucumber";
-import { Direction, Game, StoneType } from "../../../src";
-import { Action, MoveType, parse as parseMove } from "../../../src/Move";
+import { Direction, Game, StoneType } from "../../../lib";
+import { Action, MoveType, parse as parseMove } from "../../../lib/Move";
 
 function createPlaceAction(stoneType: StoneType, pos: string): Action {
     return {

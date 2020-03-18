@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Then } from "cucumber";
-import { Player, PlayerInfo } from "../../../src/Player";
+import { Player, PlayerInfo } from "../../../lib/Player";
 
 Then("{player} has {int} normal stones and {int} capstones", function (player: Player, normalStonesCount: number, capstonesCount: number) {
     const playerInfo: PlayerInfo = player === Player.One ? this.game.player1 : this.game.player2;

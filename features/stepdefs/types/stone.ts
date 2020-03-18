@@ -1,5 +1,5 @@
 import { defineParameterType, Transform } from "cucumber";
-import { StoneType } from "../../../src/Stone";
+import { StoneType } from "../../../lib/Stone";
 import { getPlayerByColor } from "./Player";
 
 const stone: Transform = {

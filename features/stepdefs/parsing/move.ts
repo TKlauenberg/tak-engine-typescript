@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Given, Then, When } from "cucumber";
-import { Action, Move, MoveType, parse } from "../../../src/Move";
+import { Action, Move, MoveType, parse } from "../../../lib/Move";
 
 Given("A the move {string}", function (move: string) {
     this.moveString = move;
