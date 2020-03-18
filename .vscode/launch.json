@@ -13,11 +13,20 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Cucumber",
+            "name": "Cucumber - All Features",
+            "program": "${workspaceFolder}/node_modules/cucumber/bin/cucumber-js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Cucumber - debug tag",
             "program": "${workspaceFolder}/node_modules/cucumber/bin/cucumber-js",
             "args": [
-                "--name",
-                "Stone Position from TPS",
+                "-t",
+                "@debug",
             ],
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
