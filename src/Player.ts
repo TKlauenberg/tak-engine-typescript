@@ -44,11 +44,24 @@ export class PlayerInfo {
         }
     }
     public static getStone(stoneBag: StoneBag, type: StoneType): Stone | undefined {
-        if (type === StoneType.CAP) {
-            return stoneBag.C.pop();
-        } else {
-            return stoneBag.F.pop();
+        let stone = undefined;
+        switch (type) {
+            case StoneType.CAP:
+                stone = stoneBag.C.pop();
+                break;
+            case StoneType.FLAT:
+                stone = stoneBag.F.pop();
+                break;
+            case StoneType.STANDING:
+                stone = stoneBag.F.pop();
+                if (stone !== undefined) {
+                    stone.type = StoneType.STANDING;
+                }
+                break;
+            default:
+                break;
         }
+        return stone;
     }
     public static createStoneBag(stones: GameStones, player: Player) {
         const flats: Stone[] = Array(stones.F).fill(1).map((_, index) => ({ type: StoneType.FLAT, player, movable: true, position: { square: "", stack: index } }));
@@ -70,13 +83,12 @@ export class PlayerInfo {
     private stoneBag: StoneBag;
     constructor(name: string, player: Player, gameStones: GameStones | StoneBag) {
         this.name = name;
+        this.player = player;
         if (typeof gameStones.F === "number" && typeof gameStones.C === "number") {
             this.stoneBag = PlayerInfo.createStoneBag(gameStones as GameStones, player);
         } else {
             this.stoneBag = gameStones as StoneBag;
         }
-
-        this.player = player;
     }
     public hasStone(stoneType: StoneType) {
         if (stoneType === StoneType.CAP) {

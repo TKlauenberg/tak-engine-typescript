@@ -75,10 +75,10 @@ export class Game {
     public currentPlayer: PlayerInfo;
     constructor(options: GameOptions) {
         const [isBoardSizeValid, stoneBagOrError] = getStoneCount(options.size);
-        this.size = options.size;
         if (!isBoardSizeValid) {
-            throw new Error(`Bord Size is not valid! Bord size is ${this.size}`);
+            throw new Error(`Bord Size is not valid! Bord size is ${options.size}`);
         }
+        this.size = options.size;
         const gameStones = stoneBagOrError as GameStones;
         const player1Name = options.player1 || "white";
         this.player1 = new PlayerInfo(player1Name, Player.One, gameStones);

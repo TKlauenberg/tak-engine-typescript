@@ -11,12 +11,13 @@ export function parse(text: string): Result<Game> {
     const headerText = file[1];
     const body = file[3];
 
-    const headerLines = grammar.tag.exec(headerText)!;
     const tags: Tag[] = [];
-    for (const headerLine of headerLines) {
-        const [result, tag] = Tag.parse(headerLine);
+    let headerLine = grammar.tag.exec(headerText)!;
+    while (headerLine !== null) {
+        const [result, tag] = Tag.parse(headerLine[0]);
         if (result) {
             tags.push(tag as Tag);
+            headerLine = grammar.tag.exec(headerText)!;
         } else {
             return [false, tag as ParsingError];
         }

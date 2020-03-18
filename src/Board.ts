@@ -192,7 +192,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
     constructor(size: number, board?: Square[][]) {
         if (board === undefined) {
             super(size);
-            for (let i = 0; i < this.length; i++) {
+            for (let i = 0; i < this.size; i++) {
                 const row = new Array(size);
                 const rowIndex = String.fromCharCode(startRowCharCode + i);
                 this[i] = row;
