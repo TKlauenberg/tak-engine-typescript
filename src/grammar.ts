@@ -1,4 +1,4 @@
-// With only small changes this grammer is from PTN Ninja by Craig Laparo
+// With only small changes this grammar is from PTN Ninja by Craig Laparo
 // which is licensed under a Creative Commons
 // Attribution-NonCommercial-ShareAlike 4.0 International License.
 // http://creativecommons.org/licenses/by-nc-sa/4.0/

@@ -1,6 +1,6 @@
 import { Board } from "./Board";
 import { ParsingError } from "./Errors";
-import { grammar } from "./grammer";
+import { grammar } from "./grammar";
 import { Result } from "./interfaces";
 import { Player, PlayerInfo } from "./Player";
 import { Square } from "./Square";
@@ -86,7 +86,7 @@ function parseBoard(tpsPart: string, boardSize: number, player1: PlayerInfo, pla
 export function parse(tpsString: string, boardSize: number, player1: PlayerInfo, player2: PlayerInfo): Result<TPS> {
     const parts = grammar.tpsGrouped.exec(tpsString)!;
     if (!parts[1]) {
-        return [false, new ParsingError(`TPS didn't match grammer`, "TPS", "")];
+        return [false, new ParsingError(`TPS didn't match grammar`, "TPS", "")];
     } else {
         if (parts[3] === "" || parts[5] === "") {
             return [false, new Error("Missing next Player or Movecount from TPS")];

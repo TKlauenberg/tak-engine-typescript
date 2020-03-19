@@ -1,5 +1,5 @@
 import { Board } from "./Board";
-import { grammar } from "./grammer";
+import { grammar } from "./grammar";
 import { Result } from "./interfaces";
 import { PlayerInfo } from "./Player";
 import { Square } from "./Square";

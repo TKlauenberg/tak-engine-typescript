@@ -1,5 +1,5 @@
 import { ParsingError } from "./Errors";
-import { grammar } from "./grammer";
+import { grammar } from "./grammar";
 
 export class Tag {
     get key() {

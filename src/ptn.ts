@@ -1,6 +1,6 @@
 import { ParsingError } from "./Errors";
 import { Game, GameOptions } from "./Game";
-import { grammar, requiredTags } from "./grammer";
+import { grammar, requiredTags } from "./grammar";
 import { Result } from "./interfaces";
 import { Action, parse as parseMove } from "./Move";
 import { Tag } from "./Tag";
