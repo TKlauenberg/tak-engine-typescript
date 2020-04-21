@@ -7,8 +7,11 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Test.js",
-            "program": "${workspaceFolder}/src/test.js"
+            "name": "Current File",
+            "program": "${file}",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ]
         },
         {
             "type": "node",
