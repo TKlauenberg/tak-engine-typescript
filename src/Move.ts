@@ -30,11 +30,16 @@ export interface Move {
 
 function parseDirection(direction: string) {
     switch (direction) {
-        case "+": return Direction.Up;
-        case "-": return Direction.Down;
-        case "<": return Direction.Left;
-        case ">": return Direction.Right;
-        default: throw new Error(`cannot parse Direction "${direction}"`);
+        case "+":
+            return Direction.Up;
+        case "-":
+            return Direction.Down;
+        case "<":
+            return Direction.Left;
+        case ">":
+            return Direction.Right;
+        default:
+            throw new Error(`cannot parse Direction "${direction}"`);
     }
 }
 
@@ -48,7 +53,7 @@ export function parse(ptnMove: string): Result<Action> {
         const amount = Number.parseInt(parts[1]) || 1;
         const position = parts[2];
         const direction = parseDirection(parts[3]);
-        const drops = parts[4] === "" ? [amount] : Array.from(parts[4]).map((x) => Number.parseInt(x));
+        const drops = parts[4] === "" ? [amount] : Array.from(parts[4]).map(x => Number.parseInt(x));
         const move: Action = {
             action,
             amount,
@@ -61,7 +66,7 @@ export function parse(ptnMove: string): Result<Action> {
         // Place
         const action = MoveType.Place;
         const parts = grammar.placeGrouped.exec(type[3])!;
-        const stoneType: StoneType = parts[1] as StoneType || StoneType.FLAT;
+        const stoneType: StoneType = (parts[1] as StoneType) || StoneType.FLAT;
         const position = parts[2];
         const move: Action = {
             action,
@@ -70,7 +75,7 @@ export function parse(ptnMove: string): Result<Action> {
         };
         return [true, move];
     }
-    return [false, new Error("move could not be parsed")];
+    return [false, new Error(`move could not be parsed! move: ${ptnMove}`)];
 }
 
 export function serialize(action: Action) {

@@ -71,7 +71,7 @@ export class Game {
     public size: number;
     public result?: GameResult;
     public board: Board;
-    public moveCount = 1;
+    public moveCount: number;
     public currentPlayer: PlayerInfo;
     constructor(options: GameOptions) {
         const [isBoardSizeValid, stoneBagOrError] = getStoneCount(options.size);
@@ -96,6 +96,7 @@ export class Game {
             }
         } else {
             // standard options
+            this.moveCount = 1;
             this.board = new Board(this.size);
             this.currentPlayer = this.player1;
         }

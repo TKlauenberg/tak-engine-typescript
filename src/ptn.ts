@@ -7,7 +7,9 @@ import { Tag } from "./Tag";
 
 export function parse(text: string): Result<Game> {
     const file = grammar.ptnGrouped.exec(text);
-    if (!file) { return [false, new Error("not a valid PTN file")]; }
+    if (!file) {
+        return [false, new Error("not a valid PTN file")];
+    }
     const headerText = file[1];
     const body = file[3];
 
@@ -22,11 +24,11 @@ export function parse(text: string): Result<Game> {
             return [false, tag as ParsingError];
         }
     }
-    const missingTags = requiredTags.filter((x) => !tags.some((y) => x === y.key));
+    const missingTags = requiredTags.filter(tagName => !tags.some(tag => tagName === tag.key));
     if (missingTags.length > 0) {
         return [false, new Error(`Some Tags are missing: ${missingTags.join(", ")}`)];
     }
-    const tagUniqueNames = new Set(tags.map((x) => x.key));
+    const tagUniqueNames = new Set(tags.map(x => x.key));
     if (tagUniqueNames.size !== tags.length) {
         return [false, new Error(`duplicate tag entries`)];
     }
@@ -34,6 +36,7 @@ export function parse(text: string): Result<Game> {
         current.set(next.key, next);
         return current;
     }, new Map<string, Tag>());
+    // todo: refactor
     const gameOptions: GameOptions = {
         size: parseInt(tagMap.get("size")!.value),
     };
@@ -57,7 +60,7 @@ export function parse(text: string): Result<Game> {
         let moveLines: RegExpMatchArray | undefined = grammar.moveGrouped.exec(body)!;
         let line = game.moveCount;
         const moves: Action[] = [];
-        // if we have a tps string, it could be that we have only one move in the first
+        // if we have a tps string, it could be that we have only one move in the first line
         if (moveLines[1] !== "" && moveLines[5] === "") {
             const currentLine = Number.parseInt(moveLines[1].trim()[0]);
             if (line !== currentLine) {
