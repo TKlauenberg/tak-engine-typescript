@@ -78,7 +78,7 @@ function parseBoard(tpsPart: string, boardSize: number, player1: PlayerInfo, pla
         }
     }
     // check for wrong size
-    if (board.length !== boardSize || board.some((x) => x.length !== boardSize)) {
+    if (board.length !== boardSize || board.some(x => x.length !== boardSize)) {
         return [false, new Error(`wrong board size one one line`)];
     }
     return [true, new Board(boardSize, board)];
@@ -88,8 +88,11 @@ export function parse(tpsString: string, boardSize: number, player1: PlayerInfo,
     if (!parts[1]) {
         return [false, new ParsingError(`TPS didn't match grammar`, "TPS", "")];
     } else {
-        if (parts[3] === "" || parts[5] === "") {
-            return [false, new Error("Missing next Player or Movecount from TPS")];
+        if (parts[3] === "") {
+            return [false, new Error("Missing next Player from TPS")];
+        }
+        if (parts[5] === "") {
+            return [false, new Error("Missing next Movecount from TPS")];
         }
         const [boardResult, board] = parseBoard(parts[1], boardSize, player1, player2);
         if (boardResult) {
