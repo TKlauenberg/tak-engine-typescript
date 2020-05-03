@@ -1,128 +1,213 @@
-import { ICloneable } from "./interfaces";
-import { Stone, StoneType } from "./Stone";
+import { ICloneable } from './interfaces';
+import { Stone, StoneType } from './Stone';
 
 
 export enum Edge {
-    Top = 1,
-    Bottom = 2,
-    Left = 4,
-    Right = 8,
+  Top = 1,
+  Bottom = 2,
+  Left = 4,
+  Right = 8,
 }
 
+/**
+ * Information of a single square on the board
+ */
 export class Square implements ICloneable<Square> {
-    position: string;
-    stones: Stone[];
-    #boardSize: number;
-    public constructor(position: string, boardSize: number, ...stones: Stone[]) {
-        this.position = position;
-        this.stones = stones;
-        this.#boardSize = boardSize;
-        this.stones.forEach((stone, index) => { stone.movable = index > stones.length - boardSize - 1; });
+  position: string;
+  stones: Stone[];
+  #boardSize: number;
+
+  /**
+   *
+   * @param {string} position position of the square
+   * @param {number} boardSize
+   * @param {Stone[]} stones stones which are on the square
+   */
+  public constructor(
+      position: string,
+      boardSize: number,
+      ...stones: Stone[]
+  ) {
+    this.position = position;
+    this.stones = stones;
+    this.#boardSize = boardSize;
+    this.stones.forEach((stone, index) => {
+      stone.movable = index > stones.length - boardSize - 1;
+    });
+  }
+
+  /**
+   *
+   * @param {Stone[]} tile array of stones
+   * @return {Stone}
+   */
+  public static getTop(tile: Stone[]): Stone {
+    return tile[tile.length - 1];
+  }
+
+  /**
+   *
+   * @param {Stone[]} tile array of stones
+   * @return {boolean}
+   */
+  public static isEmpty(tile: Stone[]): boolean {
+    return tile.length === 0;
+  }
+
+  /**
+   * Test if stones can be dropped on square
+   * @param {Stone[]} tile tile which is tested
+   * @param {Stone[]} stones stones which are tested to drop
+   * @return {[true] | [false, Error] }
+   */
+  public static canDropStones(
+      tile: Stone[],
+      ...stones: Stone[]
+  ): [true] | [false, Error] {
+    if (tile.length === 0) {
+      return [true];
     }
-    public static getTop(tile: Stone[]) {
-        return tile[tile.length - 1];
-    }
-    public static isEmpty(tile: Stone[]) {
-        return tile.length === 0;
-    }
-    /**
-     * Test if stones can be dropped on square
-     * @param stones Stone[] stones which are tested
-     */
-    public static canDropStones(tile: Stone[], ...stones: Stone[]): [true] | [false, Error] {
-        if (tile.length === 0) {
+    switch (Square.getTop(tile).type) {
+      case StoneType.FLAT: return [true];
+      case StoneType.STANDING:
+        if (stones.length === 1) {
+          if (stones[0].type === StoneType.CAP) {
             return [true];
-        }
-        switch (Square.getTop(tile).type) {
-            case StoneType.FLAT: return [true];
-            case StoneType.STANDING:
-                if (stones.length === 1) {
-                    if (stones[0].type === StoneType.CAP) {
-                        return [true];
-                    } else {
-                        return [false, new Error("Can only flatten a wall with a capstone")];
-                    }
-                } else {
-                    return [false, new Error("Can only flatten a wall with one capstone")];
-                }
-            case StoneType.CAP: return [false, new Error("Cannot move a stone onto a capstone")];
-            default: return [false, new Error("Top tile is not a stone")];
-        }
-    }
-    /**
-     * Drop new stones on tile
-     * @param stones stones to be dropped
-     * @returns Stone[] new Tile stones
-     */
-    public static drop(position: string, boardSize: number, tile: Stone[], ...stones: Stone[]): Stone[] {
-        const [canDrop, reason] = Square.canDropStones(tile, ...stones);
-        if (canDrop) {
-            if (!Square.isEmpty(tile) && Square.getTop(tile).type === StoneType.STANDING) {
-                // flattening wall
-                Square.getTop(tile).type = StoneType.FLAT;
-            }
-            const resultStack = [...tile, ...stones];
-            resultStack.forEach((stone, index) => {
-                stone.position = {
-                    square: position,
-                    stack: index,
-                };
-                stone.movable = index > resultStack.length - boardSize - 1;
-            });
-            return resultStack;
+          } else {
+            return [
+              false,
+              new Error('Can only flatten a wall with a capstone'),
+            ];
+          }
         } else {
-            throw reason;
+          return [
+            false,
+            new Error('Can only flatten a wall with one capstone'),
+          ];
         }
+      case StoneType.CAP: return [
+        false,
+        new Error('Cannot move a stone onto a capstone'),
+      ];
+      default: return [false, new Error('Top tile is not a stone')];
     }
-    /**
-     * take stones from square
-     * @param count amount of stones to take
-     */
-    public static take(tile: Stone[], count: number) {
-        if (count > tile.length) {
-            throw new Error(`There are ${tile.length} stones on this square. Cannot move ${count} stones`);
-        } else {
-            const stones: Stone[] = [];
-            for (let i = 0; i < count; i++) {
-                stones.unshift(tile.pop()!);
-            }
-            return stones;
-        }
+  }
+
+  /**
+   * Drop new stones on tile
+   * @param {string} position position of the drop for UI information
+   * @param {number} boardSize size of the board
+   * @param {Stone[]} square minimal information of the square
+   * @param {Stone[]} stones stones to be dropped
+   * @return {Stone[]} new Tile stones
+   */
+  public static drop(
+      position: string,
+      boardSize: number,
+      square: Stone[],
+      ...stones: Stone[]
+  ): Stone[] {
+    const [canDrop, reason] = Square.canDropStones(square, ...stones);
+    if (canDrop) {
+      if (
+        !Square.isEmpty(square) &&
+        Square.getTop(square).type === StoneType.STANDING
+      ) {
+        // flattening wall
+        Square.getTop(square).type = StoneType.FLAT;
+      }
+      const resultStack = [...square, ...stones];
+      resultStack.forEach((stone, index) => {
+        stone.position = {
+          square: position,
+          stack: index,
+        };
+        stone.movable = index > resultStack.length - boardSize - 1;
+      });
+      return resultStack;
+    } else {
+      throw reason;
     }
-    public get top() {
-        return Square.getTop(this.stones);
+  }
+
+  /**
+   * take stones from square
+   * @param {Stone[]} square minimal information of square
+   * @param {number} count amount of stones to take
+   * @return {Stone[]}
+   */
+  public static take(square: Stone[], count: number): Stone[] {
+    if (count > square.length) {
+      // eslint-disable-next-line max-len
+      throw new Error(`There are ${square.length} stones on this square. Cannot move ${count} stones`);
+    } else {
+      const stones: Stone[] = [];
+      for (let i = 0; i < count; i++) {
+        stones.unshift(square.pop()!);
+      }
+      return stones;
     }
-    public get isEmpty() {
-        return this.stones.length === 0;
-    }
-    public get hasStones() {
-        return this.stones.length > 0;
-    }
-    public getStones() {
-        return this.stones;
-    }
-    /**
-     * Test if stones can be dropped on square
-     * @param stones Stone[] stones which are tested
-     */
-    public canDrop(...stones: Stone[]): [true] | [false, Error] {
-        return Square.canDropStones(this.stones, ...stones);
-    }
-    /**
-     * Drop new stones on square
-     * @param stones stones to be dropped
-     */
-    public drop(...stones: Stone[]) {
-        this.stones = Square.drop(this.position, this.#boardSize, this.stones, ...stones);
-    }
-    /**
-     * take stones from square
-     * @param count amount of stones to take
-     */
-    public take(count: number) {
-        return Square.take(this.stones, count);
-    }
-    public clone() {
-        return new Square(this.position, this.#boardSize, ...this.stones);
-    }
+  }
+
+  /**
+   * @return {Stone}
+   */
+  public get top(): Stone {
+    return Square.getTop(this.stones);
+  }
+
+  /**
+   * @return {boolean}
+   */
+  public get isEmpty(): boolean {
+    return this.stones.length === 0;
+  }
+
+  /**
+   * @return {boolean}
+   */
+  public get hasStones(): boolean {
+    return this.stones.length > 0;
+  }
+
+  /**
+   * @return {Stone[]}
+   */
+  public getStones(): Stone[] {
+    return this.stones;
+  }
+
+  /**
+   * Test if stones can be dropped on square
+   * @param {Stone[]} stones stones which are tested
+   * @return {[true] | [false, Error]}
+   */
+  public canDrop(...stones: Stone[]): [true] | [false, Error] {
+    return Square.canDropStones(this.stones, ...stones);
+  }
+
+  /**
+   * Drop new stones on square
+   * @param {Stone[]} stones stones to be dropped
+   */
+  public drop(...stones: Stone[]) {
+    // eslint-disable-next-line max-len
+    this.stones = Square.drop(this.position, this.#boardSize, this.stones, ...stones);
+  }
+
+  /**
+   * take stones from square
+   * @param {number} count amount of stones to take
+   * @return {Stone[]}
+   */
+  public take(count: number): Stone[] {
+    return Square.take(this.stones, count);
+  }
+
+  /**
+   * @return {Square}
+   */
+  public clone(): Square {
+    return new Square(this.position, this.#boardSize, ...this.stones);
+  }
 }

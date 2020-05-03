@@ -1,2 +1,2 @@
-export { filterUndefined } from "./filterUndefined";
-export { range } from "./array";
+export { range } from './array';
+export { filterUndefined } from './filterUndefined';
