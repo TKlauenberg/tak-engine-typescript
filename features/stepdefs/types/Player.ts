@@ -15,12 +15,13 @@ export function getPlayerByColor(color: string): Player {
  * @param {number | string} playerNumber number of the player
  * @return {Player}
  */
-export function getPlayerByNumber(playerNumber: number | string) {
+export function getPlayerByNumber(playerNumber: number | string): Player {
   // eslint-disable-next-line max-len
   const x = typeof playerNumber === 'string' ? parseInt(playerNumber) : playerNumber;
   switch (x) {
     case 1: return Player.One;
     case 2: return Player.Two;
+    default: throw new Error(`there is no player ${x}`);
   }
 }
 const playerColor: Transform = {
