@@ -9,7 +9,7 @@ export class Tag {
    * lowercase name in order to compare to other tags
    * because PTN tags are case insensitive
    */
-  get key() {
+  get key(): string {
     return this.name.toLowerCase();
   }
   /**

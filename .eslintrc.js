@@ -21,5 +21,6 @@ module.exports = {
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "object-curly-spacing": ["error", "always"],
+        "max-len":["error", 120],
     },
 };

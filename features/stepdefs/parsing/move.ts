@@ -15,26 +15,26 @@ When('I parse the PTN move', function() {
 });
 
 Then('The Move is a place action', function() {
-  const move: Action = this.move;
+  const move = this.move as Action;
   expect(move.action).to.equal(MoveType.Place);
 });
 
 Then('The Move is a move action', function() {
-  const move: Action = this.move;
+  const move = this.move as Action;
   expect(move.action).to.equal(MoveType.Move);
 });
 
 Then('the position is {pos}', function(pos) {
-  const move: Action = this.move;
+  const move = this.move as Action;
   expect(move.position).to.equal(pos);
 });
 
 Then('The starting position is {pos}', function(pos) {
-  const move: Move = this.move;
+  const move = this.move as Move;
   expect(move.position).to.equal(pos);
 });
 
 Then('The direction is {direction}', function(direction) {
-  const move: Move = this.move;
+  const move = this.move as Move;
   expect(move.direction).to.equal(direction);
 });

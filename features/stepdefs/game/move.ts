@@ -31,7 +31,7 @@ When('the user tries to place a {stoneTypeByName} at {pos}',
       try {
         (this.game as Game).execute(move);
       } catch (err) {
-        this.error = err;
+        this.error = err as Error;
       }
     });
 
@@ -70,7 +70,7 @@ When('the user tries to move one stone from {pos} {direction}',
       try {
         (this.game as Game).execute(move);
       } catch (err) {
-        this.error = err;
+        this.error = err as Error;
       }
     });
 
@@ -96,7 +96,7 @@ When('the user tries to move {int} stones from {pos} {direction}, dropping one s
       try {
         (this.game as Game).execute(move);
       } catch (err) {
-        this.error = err;
+        this.error = err as Error;
       }
     });
 
@@ -104,17 +104,17 @@ When('the user tries to move {int} stones from {pos} {direction}, dropping one s
 When('the user tries to move {int} stones from {pos} {direction} with all stones',
     function(amount: number, position: string, direction: Direction) {
       const move: Action =
-        createMoveAction(position, direction, amount, [amount]);
+      createMoveAction(position, direction, amount, [amount]);
       try {
         (this.game as Game).execute(move);
       } catch (err) {
-        this.error = err;
+        this.error = err as Error;
       }
     });
 
 When('the user executes these moves', function(dataTable: TableDefinition) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const movesStrings: any = dataTable.raw();
+  const movesStrings = dataTable.raw() as [string][];
   for (const moveString of movesStrings) {
     const [parseSuccessfull, move] = parseMove(moveString[0]);
     if (!parseSuccessfull) {
@@ -134,7 +134,7 @@ Then('all stones should have the position of the square and the stack they are p
       tile.stones.forEach((stone, index) => {
         if (position !== stone.position.square) {
           // eslint-disable-next-line max-len
-          throw new Error(`Position doesn't match!\n Tile Position: ${position},\n Stone position: ${stone.position}`);
+          throw new Error(`Position doesn't match!\n Tile Position: ${position},\n Stone position: ${stone.position.square}`);
         }
         if (index !== stone.position.stack) {
           // eslint-disable-next-line max-len
@@ -153,8 +153,9 @@ Then('all unmovable stones should have the information movable -> false', functi
       const stackHeight = tile.stones.length;
       tile.stones.forEach((stone, index) => {
         const shouldBeMovable = index > stackHeight - game.size - 1;
+        const movableString = (movable:boolean) => movable ? 'movable' : 'not movable';
         // eslint-disable-next-line max-len
-        expect(stone.movable).to.equal(shouldBeMovable, `expected ${shouldBeMovable} but was ${stone.movable}!\njson:${JSON.stringify(tile.stones)}`);
+        expect(stone.movable).to.equal(shouldBeMovable, `expected stone to be ${movableString(shouldBeMovable)} but was ${movableString(stone.movable)}!\njson:${JSON.stringify(tile.stones)}`);
       });
     });
   });

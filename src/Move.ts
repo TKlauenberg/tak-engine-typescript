@@ -95,7 +95,7 @@ export function parse(ptnMove: string): Result<Action> {
  * @param {Action} action Action to serialize
  * @return {string}
  */
-export function serialize(action: Action) {
+export function serialize(action: Action): string {
   if (action.action === MoveType.Place) {
     // eslint-disable-next-line max-len
     const typeString = action.stoneType === StoneType.FLAT ? '' : action.stoneType;

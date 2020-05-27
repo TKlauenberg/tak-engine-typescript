@@ -190,7 +190,7 @@ export class Square implements ICloneable<Square> {
    * Drop new stones on square
    * @param {Stone[]} stones stones to be dropped
    */
-  public drop(...stones: Stone[]) {
+  public drop(...stones: Stone[]): void {
     // eslint-disable-next-line max-len
     this.stones = Square.drop(this.position, this.#boardSize, this.stones, ...stones);
   }

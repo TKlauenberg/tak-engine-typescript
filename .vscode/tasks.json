@@ -12,7 +12,7 @@
             ],
             "group": "build",
             "presentation": {
-                "reveal": "never",
+                "reveal": "never"
             },
             "runOptions": {
                 "runOn": "folderOpen"
@@ -27,11 +27,20 @@
             ],
             "group": "build",
             "presentation": {
-                "reveal": "never",
+                "reveal": "never"
             },
             "runOptions": {
                 "runOn": "folderOpen"
             }
+        },
+        {
+            "type": "npm",
+            "script": "lint",
+            "problemMatcher": [
+                "$eslint-stylish"
+            ],
+            "label": "npm: lint",
+            "detail": "eslint ."
         }
     ]
 }

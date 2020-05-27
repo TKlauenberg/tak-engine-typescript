@@ -2,10 +2,10 @@
 /* eslint-disable new-cap */
 import { expect } from 'chai';
 import { Given, Then, When } from 'cucumber';
-import { Direction, Move, MoveType, Place, serialize } from '../../../lib/Move';
+import { Direction, Move, MoveType, Place, serialize, StoneType } from '../../../lib';
 
 Given('a place move with a {stoneTypeByName} at {pos}',
-    function(stoneType, position) {
+    function(stoneType: StoneType, position: string) {
       const move: Place = {
         action: MoveType.Place,
         stoneType,

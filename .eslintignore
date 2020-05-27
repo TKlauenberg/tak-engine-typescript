@@ -1,2 +1,3 @@
 lib
 features/**/*.js
+.eslintrc.js

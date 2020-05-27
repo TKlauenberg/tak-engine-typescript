@@ -10,7 +10,6 @@ export interface StoneBag {
   C: Stone[];
 }
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IPlayerInfo {
   name: string;
   player: Player;

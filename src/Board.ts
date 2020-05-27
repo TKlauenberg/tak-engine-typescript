@@ -59,13 +59,13 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
   /**
    * get the size of the board
    */
-  public get size() {
+  public get size(): number {
     return this.length;
   }
   /**
    * get tps of the board
    */
-  public get tps() {
+  public get tps(): string {
     return Board.getTps(this);
   }
 
@@ -106,7 +106,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
   /**
    * get roads on the current board
    */
-  public get roads() {
+  public get roads(): RoadSquare[][] {
     return Board.getRoads(this);
   }
 
@@ -121,7 +121,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
     const indexes = Array.from(range(1, board.length - 1));
     const left = indexes.map((x) => board[x][0]);
     const borderTiles = bottom.concat(left)
-        // eslint-disable-next-line max-len
+    // eslint-disable-next-line max-len
         .filter((x) => x.top !== undefined && x.top.type !== StoneType.STANDING);
     return borderTiles
         .map((x) => Board.findRoadsFromTile(board, x))
@@ -131,14 +131,14 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
   /**
    * check if all squares on the board are filled
    */
-  public get isFull() {
+  public get isFull(): boolean {
     return Board.isBoardFull(this);
   }
 
   /**
    * get current score of the board
    */
-  public get score() {
+  public get score(): [number, number] {
     return [Board.getScore(this, Player.One), Board.getScore(this, Player.Two)];
   }
 
@@ -150,7 +150,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
   * @param {Player} player undefined or the player for which to get the score
   * @return {number|[number,number]}
   */
-  public static getScore(board: Square[][], player?: Player) {
+  public static getScore(board: Square[][], player?: Player): [number, number] | number {
     if (player === undefined) {
       return [
         Board.getScore(board, Player.One),
@@ -194,7 +194,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
    * @param {string} position positiion of the square
    * @return {Square}
    */
-  public static getSquare(board: Square[][], position: string) {
+  public static getSquare(board: Square[][], position: string): Square {
     const [row, column] = Board.getPosition(position);
     return board[row][column];
   }
@@ -321,7 +321,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
       // filter empty tiles
           .filter((x) => x.top !== undefined)
       // only flat or capstones
-          // eslint-disable-next-line max-len
+      // eslint-disable-next-line max-len
           .filter((x) => x.top.type === StoneType.FLAT || x.top.type === StoneType.CAP)
       // road must be from the same player
           .filter((x) => x.top.player === square.top.player)
@@ -342,7 +342,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
     if (board === undefined) {
       super(size);
       for (let i = 0; i < this.size; i++) {
-        const row = new Array(size);
+        const row = new Array<Square>(size);
         const rowIndex = String.fromCharCode(startRowCharCode + i);
         this[i] = row;
         for (let j = 0; j < row.length; j++) {
@@ -369,7 +369,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
    * @param {string} position ptn representation of the position
    * @return {Square}
    */
-  public getSquare(position: string) {
+  public getSquare(position: string): Square {
     return Board.getSquare(this, position);
   }
 
