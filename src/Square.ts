@@ -1,7 +1,6 @@
 import { ICloneable } from './interfaces';
 import { Stone, StoneType } from './Stone';
 
-
 export enum Edge {
   Top = 1,
   Bottom = 2,
@@ -23,17 +22,10 @@ export class Square implements ICloneable<Square> {
    * @param {number} boardSize
    * @param {Stone[]} stones stones which are on the square
    */
-  public constructor(
-      position: string,
-      boardSize: number,
-      ...stones: Stone[]
-  ) {
+  public constructor(position: string, boardSize: number, ...stones: Stone[]) {
     this.position = position;
     this.stones = stones;
     this.#boardSize = boardSize;
-    this.stones.forEach((stone, index) => {
-      stone.movable = index > stones.length - boardSize - 1;
-    });
   }
 
   /**
@@ -61,14 +53,15 @@ export class Square implements ICloneable<Square> {
    * @return {[true] | [false, Error] }
    */
   public static canDropStones(
-      tile: Stone[],
-      ...stones: Stone[]
+    tile: Stone[],
+    ...stones: Stone[]
   ): [true] | [false, Error] {
     if (tile.length === 0) {
       return [true];
     }
     switch (Square.getTop(tile).type) {
-      case StoneType.FLAT: return [true];
+      case StoneType.FLAT:
+        return [true];
       case StoneType.STANDING:
         if (stones.length === 1) {
           if (stones[0].type === StoneType.CAP) {
@@ -85,11 +78,10 @@ export class Square implements ICloneable<Square> {
             new Error('Can only flatten a wall with one capstone'),
           ];
         }
-      case StoneType.CAP: return [
-        false,
-        new Error('Cannot move a stone onto a capstone'),
-      ];
-      default: return [false, new Error('Top tile is not a stone')];
+      case StoneType.CAP:
+        return [false, new Error('Cannot move a stone onto a capstone')];
+      default:
+        return [false, new Error('Top tile is not a stone')];
     }
   }
 
@@ -102,10 +94,10 @@ export class Square implements ICloneable<Square> {
    * @return {Stone[]} new Tile stones
    */
   public static drop(
-      position: string,
-      boardSize: number,
-      square: Stone[],
-      ...stones: Stone[]
+    position: string,
+    boardSize: number,
+    square: Stone[],
+    ...stones: Stone[]
   ): Stone[] {
     const [canDrop, reason] = Square.canDropStones(square, ...stones);
     if (canDrop) {
@@ -117,13 +109,6 @@ export class Square implements ICloneable<Square> {
         Square.getTop(square).type = StoneType.FLAT;
       }
       const resultStack = [...square, ...stones];
-      resultStack.forEach((stone, index) => {
-        stone.position = {
-          square: position,
-          stack: index,
-        };
-        stone.movable = index > resultStack.length - boardSize - 1;
-      });
       return resultStack;
     } else {
       throw reason;
@@ -139,7 +124,9 @@ export class Square implements ICloneable<Square> {
   public static take(square: Stone[], count: number): Stone[] {
     if (count > square.length) {
       // eslint-disable-next-line max-len
-      throw new Error(`There are ${square.length} stones on this square. Cannot move ${count} stones`);
+      throw new Error(
+        `There are ${square.length} stones on this square. Cannot move ${count} stones`,
+      );
     } else {
       const stones: Stone[] = [];
       for (let i = 0; i < count; i++) {
@@ -192,7 +179,12 @@ export class Square implements ICloneable<Square> {
    */
   public drop(...stones: Stone[]): void {
     // eslint-disable-next-line max-len
-    this.stones = Square.drop(this.position, this.#boardSize, this.stones, ...stones);
+    this.stones = Square.drop(
+      this.position,
+      this.#boardSize,
+      this.stones,
+      ...stones,
+    );
   }
 
   /**

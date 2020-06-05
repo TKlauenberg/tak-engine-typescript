@@ -78,7 +78,6 @@ function parseBoard(
               new Error('Not enough stones for this board. Could not use TPS'),
             ];
           }
-          stone.position = { square: position, stack: i };
           stones.push(stone);
         }
         stones[stones.length - 1].type = topStoneType;

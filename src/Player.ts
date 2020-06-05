@@ -47,10 +47,10 @@ export class PlayerInfo {
   }
 
   /**
- *
- * @param {StoneBag | PlayerInfo} stoneInfo Information about Stones
- * @return {number}
- */
+   *
+   * @param {StoneBag | PlayerInfo} stoneInfo Information about Stones
+   * @return {number}
+   */
   public static getCapstonesCount(stoneInfo: StoneBag | PlayerInfo): number {
     if (stoneInfo instanceof PlayerInfo) {
       return stoneInfo.normalStonesCount;
@@ -60,11 +60,11 @@ export class PlayerInfo {
   }
 
   /**
- *
- * @param {StoneBag} stoneBag Information about Stones
- * @param {StoneType} stoneType type of the stone
- * @return {boolean}
- */
+   *
+   * @param {StoneBag} stoneBag Information about Stones
+   * @param {StoneType} stoneType type of the stone
+   * @return {boolean}
+   */
   public static hasStone(stoneBag: StoneBag, stoneType: StoneType): boolean {
     if (stoneType === StoneType.CAP) {
       return this.getCapstonesCount(stoneBag) > 0;
@@ -80,8 +80,8 @@ export class PlayerInfo {
    * @return {Stone | undefined}
    */
   public static getStone(
-      stoneBag: StoneBag,
-      type: StoneType
+    stoneBag: StoneBag,
+    type: StoneType,
   ): Stone | undefined {
     let stone = undefined;
     switch (type) {
@@ -111,26 +111,27 @@ export class PlayerInfo {
    */
   public static createStoneBag(stones: GameStones, player: Player): StoneBag {
     const flats: Stone[] = Array(stones.F)
-        .fill(1)
-        .map((_, index) => ({
-          type: StoneType.FLAT,
-          player, movable: true,
-          position: {
-            square: '',
-            stack: index,
-          },
-        }));
+      .fill(1)
+      .map((_, index) => ({
+        type: StoneType.FLAT,
+        player,
+        movable: true,
+        position: {
+          square: '',
+          stack: index,
+        },
+      }));
     const cap: Stone[] = Array(stones.C)
-        .fill(1)
-        .map((_, index) => ({
-          type: StoneType.CAP,
-          player,
-          movable: true,
-          position: {
-            square: '',
-            stack: index + flats.length,
-          },
-        }));
+      .fill(1)
+      .map((_, index) => ({
+        type: StoneType.CAP,
+        player,
+        movable: true,
+        position: {
+          square: '',
+          stack: index + flats.length,
+        },
+      }));
     const stoneBag = { C: cap, F: flats };
     return stoneBag;
   }

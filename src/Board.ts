@@ -23,18 +23,20 @@ const TopToBottom = Edge.Top | Edge.Bottom;
 const LeftToRight = Edge.Left | Edge.Right;
 
 type RoadSquare = Square & { edges: Edge };
-export interface GameStones { F: number; C: number }
+export interface GameStones {
+  F: number;
+  C: number;
+}
 /**
  *
  * @param {T} maybeGameStones Object that could be a Gamestones Object
  * @return {boolean}
  */
 export function isGameStones(
-    maybeGameStones: unknown | GameStones
+  maybeGameStones: unknown | GameStones,
 ): maybeGameStones is GameStones {
   const gameStones = maybeGameStones as GameStones;
-  return typeof gameStones.F === 'number' &&
-    typeof gameStones.C === 'number';
+  return typeof gameStones.F === 'number' && typeof gameStones.C === 'number';
 }
 
 /**
@@ -87,10 +89,11 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
             parts.push(`x${countEmpty}`);
           }
           const tileTps = square.stones
-              .map((x) => x.player === Player.One ? '1' : '2')
-              .reduce((x, y) => x + y, '');
+            .map((x) => (x.player === Player.One ? '1' : '2'))
+            .reduce((x, y) => x + y, '');
           // eslint-disable-next-line max-len
-          const stoneType = square.top.type === StoneType.FLAT ? '' : square.top.type;
+          const stoneType =
+            square.top.type === StoneType.FLAT ? '' : square.top.type;
           parts.push(tileTps + stoneType);
         }
       }
@@ -120,12 +123,13 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
     // indexes from 1 to size - 2 so we don't get tiles multiple times
     const indexes = Array.from(range(1, board.length - 1));
     const left = indexes.map((x) => board[x][0]);
-    const borderTiles = bottom.concat(left)
-    // eslint-disable-next-line max-len
-        .filter((x) => x.top !== undefined && x.top.type !== StoneType.STANDING);
+    const borderTiles = bottom
+      .concat(left)
+      // eslint-disable-next-line max-len
+      .filter((x) => x.top !== undefined && x.top.type !== StoneType.STANDING);
     return borderTiles
-        .map((x) => Board.findRoadsFromTile(board, x))
-        .reduce((x, y) => x.concat(y), []);
+      .map((x) => Board.findRoadsFromTile(board, x))
+      .reduce((x, y) => x.concat(y), []);
   }
 
   /**
@@ -145,12 +149,15 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
   public static getScore(board: Square[][], player: Player): number;
   public static getScore(board: Square[][]): [number, number];
   /**
-  * get the score of one or both players from the board
-  * @param {Array<Array<Square>>} board board information
-  * @param {Player} player undefined or the player for which to get the score
-  * @return {number|[number,number]}
-  */
-  public static getScore(board: Square[][], player?: Player): [number, number] | number {
+   * get the score of one or both players from the board
+   * @param {Array<Array<Square>>} board board information
+   * @param {Player} player undefined or the player for which to get the score
+   * @return {number|[number,number]}
+   */
+  public static getScore(
+    board: Square[][],
+    player?: Player,
+  ): [number, number] | number {
     if (player === undefined) {
       return [
         Board.getScore(board, Player.One),
@@ -159,12 +166,12 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
     } else {
       const squares = board.reduce((x, y) => x.concat(y));
       const filtered = squares
-          .filter((x) => !x.isEmpty)
-          .filter((x) => {
-            const topIsFromPlayer = x.top.player === player;
-            const topIsFlatStone = x.top.type === StoneType.FLAT;
-            return topIsFromPlayer && topIsFlatStone;
-          });
+        .filter((x) => !x.isEmpty)
+        .filter((x) => {
+          const topIsFromPlayer = x.top.player === player;
+          const topIsFlatStone = x.top.type === StoneType.FLAT;
+          return topIsFromPlayer && topIsFlatStone;
+        });
       return filtered.length;
     }
   }
@@ -211,10 +218,10 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
    * @return {Square}
    */
   public static getNeighbourSquare(
-      board: Square[][],
-      position: string,
-      direction: Direction,
-      length = 1
+    board: Square[][],
+    position: string,
+    direction: Direction,
+    length = 1,
   ): Square {
     let [row, column] = Board.getPosition(position);
     switch (direction) {
@@ -243,14 +250,16 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
    * @return {Array<Square>}
    */
   public static getAllNeighbourSquares(
-      board: Square[][],
-      position: string
+    board: Square[][],
+    position: string,
   ): Square[] {
     const [row, column] = Board.getPosition(position);
     // eslint-disable-next-line max-len
-    const up = board[row + 1] === undefined ? undefined : board[row + 1][column];
+    const up =
+      board[row + 1] === undefined ? undefined : board[row + 1][column];
     // eslint-disable-next-line max-len
-    const down = board[row - 1] === undefined ? undefined : board[row - 1][column];
+    const down =
+      board[row - 1] === undefined ? undefined : board[row - 1][column];
     const left = board[row][column - 1];
     const right = board[row][column + 1];
     return [up, down, left, right].filter(filterUndefined);
@@ -301,9 +310,9 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
    * @return {Array<Array<RoadSquare>>}
    */
   private static findRoadsFromTile(
-      board: Square[][],
-      square: Square,
-      road: RoadSquare[] = []
+    board: Square[][],
+    square: Square,
+    road: RoadSquare[] = [],
   ): RoadSquare[][] {
     const edges = Board.getEdges(board, square.position);
     const roadTile = square as RoadSquare;
@@ -318,17 +327,19 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
       const neighbours = Board.getAllNeighbourSquares(board, square.position);
       const positions = road.map((x) => x.position);
       const roads = neighbours
-      // filter empty tiles
-          .filter((x) => x.top !== undefined)
-      // only flat or capstones
-      // eslint-disable-next-line max-len
-          .filter((x) => x.top.type === StoneType.FLAT || x.top.type === StoneType.CAP)
-      // road must be from the same player
-          .filter((x) => x.top.player === square.top.player)
-      // filter tiles which were already part of the road to mitigate circles
-          .filter((x) => positions.every((y) => x.position !== y))
-          .map((x) => Board.findRoadsFromTile(board, x, road))
-          .reduce((x, y) => x.concat(y), []);
+        // filter empty tiles
+        .filter((x) => x.top !== undefined)
+        // only flat or capstones
+        // eslint-disable-next-line max-len
+        .filter(
+          (x) => x.top.type === StoneType.FLAT || x.top.type === StoneType.CAP,
+        )
+        // road must be from the same player
+        .filter((x) => x.top.player === square.top.player)
+        // filter tiles which were already part of the road to mitigate circles
+        .filter((x) => positions.every((y) => x.position !== y))
+        .map((x) => Board.findRoadsFromTile(board, x, road))
+        .reduce((x, y) => x.concat(y), []);
       return roads;
     }
   }
@@ -374,29 +385,30 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
   }
 
   /**
- * Get next square in one direction.
- * This function is used in a move and a stack is moved
- * @example Board.getNeighbourSquare(board, 'b2', Direction.Up, 2)
- * would give the square on position 'b4'
- * @param {string} position position of the Square from where to go from
- * @param {Direction} direction direction in which to get the next Square
- * @param {number} length how long in one direction to go
- * @return {Square}
- */
+   * Get next square in one direction.
+   * This function is used in a move and a stack is moved
+   * @example Board.getNeighbourSquare(board, 'b2', Direction.Up, 2)
+   * would give the square on position 'b4'
+   * @param {string} position position of the Square from where to go from
+   * @param {Direction} direction direction in which to get the next Square
+   * @param {number} length how long in one direction to go
+   * @return {Square}
+   */
   public getNeighbourSquare(
-      position: string,
-      direction: Direction,
-      length = 1): Square {
+    position: string,
+    direction: Direction,
+    length = 1,
+  ): Square {
     return Board.getNeighbourSquare(this, position, direction, length);
   }
 
   /**
- * Get all squares next to the the position which is given
- * used for pathfinding
- * @param {string} position the middle position
- * from wich to get all neighbours
- * @return {Array<Square>}
- */
+   * Get all squares next to the the position which is given
+   * used for pathfinding
+   * @param {string} position the middle position
+   * from wich to get all neighbours
+   * @return {Array<Square>}
+   */
   public getAllNeighbourSquares(position: string): Square[] {
     return Board.getAllNeighbourSquares(this, position);
   }

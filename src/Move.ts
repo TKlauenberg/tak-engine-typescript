@@ -65,7 +65,10 @@ export function parse(ptnMove: string): Result<Action> {
     const position = parts[2];
     const direction = parseDirection(parts[3]);
     // eslint-disable-next-line max-len
-    const drops = parts[4] === '' ? [amount] : Array.from(parts[4]).map((x) => Number.parseInt(x));
+    const drops =
+      parts[4] === ''
+        ? [amount]
+        : Array.from(parts[4]).map((x) => Number.parseInt(x));
     const move: Action = {
       action,
       amount,
@@ -98,11 +101,14 @@ export function parse(ptnMove: string): Result<Action> {
 export function serialize(action: Action): string {
   if (action.action === MoveType.Place) {
     // eslint-disable-next-line max-len
-    const typeString = action.stoneType === StoneType.FLAT ? '' : action.stoneType;
+    const typeString =
+      action.stoneType === StoneType.FLAT ? '' : action.stoneType;
     return `${typeString}${action.position}`;
   } else {
     // eslint-disable-next-line max-len
-    return `${action.amount}${action.position}${action.direction}${action.drops.join('')}`;
+    return `${action.amount}${action.position}${
+      action.direction
+    }${action.drops.join('')}`;
   }
 }
 
@@ -114,9 +120,9 @@ export function serialize(action: Action): string {
  * @return {Result<T>}
  */
 export function excecuteMove<T extends Square[][]>(
-    move: Action,
-    board: T,
-    player: PlayerInfo
+  move: Action,
+  board: T,
+  player: PlayerInfo,
 ): Result<T> {
   if (move.action === MoveType.Place) {
     const stone = player.getStone(move.stoneType);
@@ -139,8 +145,12 @@ export function excecuteMove<T extends Square[][]>(
       return [false, err];
     }
     for (let i = 0; i < move.drops.length; i++) {
-      const dropSquare =
-        Board.getNeighbourSquare(board, move.position, move.direction, i + 1);
+      const dropSquare = Board.getNeighbourSquare(
+        board,
+        move.position,
+        move.direction,
+        i + 1,
+      );
       if (dropSquare === undefined) {
         return [false, new Error('Cannot move out of the board')];
       }

@@ -6,10 +6,10 @@ import { Square } from './Square';
 import { parse as parseTps, TPS } from './tps';
 
 export interface GameOptions {
-    size: number;
-    player1?: string;
-    player2?: string;
-    tps?: string;
+  size: number;
+  player1?: string;
+  player2?: string;
+  tps?: string;
 }
 
 /**
@@ -25,10 +25,10 @@ export class Game {
    * @return {GameResult | false}
    */
   public static hasGameEnded(
-      board: Square[][],
-      currentPlayer: Player,
-      player1: StoneBag | PlayerInfo,
-      player2: StoneBag | PlayerInfo
+    board: Square[][],
+    currentPlayer: Player,
+    player1: StoneBag | PlayerInfo,
+    player2: StoneBag | PlayerInfo,
   ): GameResult | false {
     const roads = Board.getRoads(board);
     // road win
@@ -37,10 +37,12 @@ export class Game {
       if (roads.length === 1) {
         winningPlayer = roads[0][0].top.player;
       } else {
-        const couldPlayerOneWin = roads
-            .some((x) => x[0].top.player === Player.One);
-        const couldPlayerTwoWin = roads
-            .some((x) => x[0].top.player === Player.Two);
+        const couldPlayerOneWin = roads.some(
+          (x) => x[0].top.player === Player.One,
+        );
+        const couldPlayerTwoWin = roads.some(
+          (x) => x[0].top.player === Player.Two,
+        );
         if (couldPlayerOneWin && couldPlayerTwoWin) {
           winningPlayer = currentPlayer;
         } else if (couldPlayerOneWin) {
@@ -52,9 +54,11 @@ export class Game {
       return winningPlayer === Player.One ? 'R-0' : '0-R';
     }
     // count win
-    if (Board.isBoardFull(board) ||
+    if (
+      Board.isBoardFull(board) ||
       PlayerInfo.getTotalStones(player1) === 0 ||
-      PlayerInfo.getTotalStones(player2) === 0) {
+      PlayerInfo.getTotalStones(player2) === 0
+    ) {
       const [scorePlayer1, scorePlayer2] = Board.getScore(board);
       if (scorePlayer1 === scorePlayer2) {
         return '1/2-1/2';
@@ -75,9 +79,9 @@ export class Game {
    * @return {string}
    */
   public static getTps(
-      board: Square[][],
-      currentPlayer: Player,
-      moveCount: number
+    board: Square[][],
+    currentPlayer: Player,
+    moveCount: number,
   ): string {
     const player = currentPlayer === Player.One ? '1' : '2';
     return `${Board.getTps(board)} ${player} ${moveCount}`;
@@ -94,12 +98,12 @@ export class Game {
    * @return {Array<Array<Square>>}
    */
   public static executeMove(
-      board: Square[][],
-      currentPlayer: Player,
-      moveCount: number,
-      move: Action,
-      player1: PlayerInfo | StoneBag,
-      player2: PlayerInfo | StoneBag
+    board: Square[][],
+    currentPlayer: Player,
+    moveCount: number,
+    move: Action,
+    player1: PlayerInfo | StoneBag,
+    player2: PlayerInfo | StoneBag,
   ): Array<Array<Square>> {
     // first action is always a place of an enemy stone
     // move.action is checked cause of typescript type checking
@@ -109,21 +113,28 @@ export class Game {
     }
     const stoneBagOrPlayerInfo = player === Player.One ? player1 : player2;
     // eslint-disable-next-line max-len
-    const playerInfo = stoneBagOrPlayerInfo instanceof PlayerInfo ? stoneBagOrPlayerInfo : new PlayerInfo('', player, stoneBagOrPlayerInfo);
+    const playerInfo =
+      stoneBagOrPlayerInfo instanceof PlayerInfo
+        ? stoneBagOrPlayerInfo
+        : new PlayerInfo('', player, stoneBagOrPlayerInfo);
     // eslint-disable-next-line max-len
-    const [couldExcecute, newBoardOrError] = excecuteMove(move, board, playerInfo);
+    const [couldExcecute, newBoardOrError] = excecuteMove(
+      move,
+      board,
+      playerInfo,
+    );
     if (couldExcecute) {
       return newBoardOrError as Board;
     } else {
       throw newBoardOrError;
     }
   }
-    public player1: PlayerInfo;
-    public player2: PlayerInfo;
-    public size: number;
-    public result?: GameResult;
-    public board: Board;
-    public moveCount: number;
+  public player1: PlayerInfo;
+  public player2: PlayerInfo;
+  public size: number;
+  public result?: GameResult;
+  public board: Board;
+  public moveCount: number;
   public currentPlayer: PlayerInfo;
   /**
    * create a game
@@ -141,17 +152,25 @@ export class Game {
     const player2Name = options.player2 || 'black';
     this.player2 = new PlayerInfo(player2Name, Player.Two, gameStones);
     if (options.tps !== undefined) {
-      const [tpsParseResult, tpsOrError] =
-        parseTps(options.tps, this.size, this.player1, this.player2);
+      const [tpsParseResult, tpsOrError] = parseTps(
+        options.tps,
+        this.size,
+        this.player1,
+        this.player2,
+      );
       // eslint-disable-next-line max-len, @typescript-eslint/no-unused-vars
-      const resultIsTps = (result: boolean, tpsOrError: TPS | Error): tpsOrError is TPS => result;
+      const resultIsTps = (
+        result: boolean,
+        tpsOrError: TPS | Error,
+      ): tpsOrError is TPS => result;
       // use function as type guard
       if (resultIsTps(tpsParseResult, tpsOrError)) {
         const tps = tpsOrError;
         this.board = new Board(this.size, tps.board);
         this.moveCount = tps.move;
         // eslint-disable-next-line max-len
-        this.currentPlayer = tps.player === Player.One ? this.player1 : this.player2;
+        this.currentPlayer =
+          tps.player === Player.One ? this.player1 : this.player2;
       } else {
         throw tpsOrError;
       }
@@ -170,10 +189,10 @@ export class Game {
   get hasEnded(): boolean {
     if (this.result === undefined) {
       const result = Game.hasGameEnded(
-          this.board,
-          this.currentPlayer.player,
-          this.player1,
-          this.player2
+        this.board,
+        this.currentPlayer.player,
+        this.player1,
+        this.player2,
       );
       if (result !== false) {
         this.result = result;
@@ -204,10 +223,14 @@ export class Game {
     let player = this.currentPlayer;
     if (this.moveCount === 1) {
       // eslint-disable-next-line max-len
-      player = this.currentPlayer === this.player1 ? this.player2 : this.player1;
+      player =
+        this.currentPlayer === this.player1 ? this.player2 : this.player1;
     }
-    const [couldExcecute, newBoardOrError] =
-      excecuteMove(move, this.board, player);
+    const [couldExcecute, newBoardOrError] = excecuteMove(
+      move,
+      this.board,
+      player,
+    );
     if (couldExcecute) {
       if (!this.hasEnded) {
         if (this.currentPlayer === this.player1) {

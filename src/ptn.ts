@@ -29,11 +29,15 @@ export function parse(text: string): Result<Game> {
       return [false, tag as ParsingError];
     }
   }
-  const missingTags = requiredTags
-      .filter((tagName) => !tags.some((tag) => tagName === tag.key));
+  const missingTags = requiredTags.filter(
+    (tagName) => !tags.some((tag) => tagName === tag.key),
+  );
   if (missingTags.length > 0) {
     // eslint-disable-next-line max-len
-    return [false, new Error(`Some Tags are missing: ${missingTags.join(', ')}`)];
+    return [
+      false,
+      new Error(`Some Tags are missing: ${missingTags.join(', ')}`),
+    ];
   }
   const tagUniqueNames = new Set(tags.map((x) => x.key));
   if (tagUniqueNames.size !== tags.length) {
@@ -43,7 +47,7 @@ export function parse(text: string): Result<Game> {
     current.set(next.key, next);
     return current;
   }, new Map<string, Tag>());
-    // todo: refactor
+  // todo: refactor
   const gameOptions: GameOptions = {
     size: parseInt(tagMap.get('size')!.value),
   };
@@ -65,7 +69,9 @@ export function parse(text: string): Result<Game> {
   // parse Moves
   if (body) {
     // eslint-disable-next-line max-len
-    let moveLines: RegExpMatchArray | undefined = grammar.moveGrouped.exec(body)!;
+    let moveLines: RegExpMatchArray | undefined = grammar.moveGrouped.exec(
+      body,
+    )!;
     let line = game.moveCount;
     const moves: Action[] = [];
     // if we have a tps string,
@@ -74,7 +80,10 @@ export function parse(text: string): Result<Game> {
       const currentLine = Number.parseInt(moveLines[1].trim()[0]);
       if (line !== currentLine) {
         // eslint-disable-next-line max-len
-        return [false, new Error(`Expected Line ${line} but found ${currentLine}`)];
+        return [
+          false,
+          new Error(`Expected Line ${line} but found ${currentLine}`),
+        ];
       }
       const [parseSuccess, move] = parseMove(moveLines[3].trim());
       if (parseSuccess) {
@@ -83,13 +92,18 @@ export function parse(text: string): Result<Game> {
         return [false, move as Error];
       }
       // eslint-disable-next-line max-len
-      moveLines = moveLines[10] ? grammar.moveGrouped.exec(moveLines[10])! : undefined;
+      moveLines = moveLines[10]
+        ? grammar.moveGrouped.exec(moveLines[10])!
+        : undefined;
     }
     while (moveLines !== undefined) {
       const currentLine = Number.parseInt(moveLines[1].trim()[0]);
       if (line !== currentLine) {
         // eslint-disable-next-line max-len
-        return [false, new Error(`Expected Line ${line} but found ${currentLine}`)];
+        return [
+          false,
+          new Error(`Expected Line ${line} but found ${currentLine}`),
+        ];
       }
       const [firstParseSuccess, firstMove] = parseMove(moveLines[3].trim());
       if (firstParseSuccess) {
@@ -104,7 +118,9 @@ export function parse(text: string): Result<Game> {
         return [false, seccondMove as Error];
       }
       // eslint-disable-next-line max-len
-      moveLines = moveLines[10] ? grammar.moveGrouped.exec(moveLines[10])! : undefined;
+      moveLines = moveLines[10]
+        ? grammar.moveGrouped.exec(moveLines[10])!
+        : undefined;
       line++;
     }
     for (const move of moves) {

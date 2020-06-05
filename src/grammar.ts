@@ -22,10 +22,12 @@ const otherTagsRegExp = {
   // eslint-disable-next-line max-len
   clock: /^\d+min(\+\d+sec)$|^((((\d\s+)?\d\d?:)?\d\d?:)?\d\d?\s*)?(\+(((\d\s+)?\d\d?:)?\d\d?:)?\d\d?)?$/,
 } as const;
-export const requiredTags: Array<keyof typeof requiredTagsRegExp> =
-  Object.keys(requiredTagsRegExp) as Array<keyof typeof requiredTagsRegExp>;
-export const otherTags: Array<keyof typeof otherTagsRegExp> =
-  Object.keys(otherTagsRegExp) as Array<keyof typeof otherTagsRegExp>;
+export const requiredTags: Array<keyof typeof requiredTagsRegExp> = Object.keys(
+  requiredTagsRegExp,
+) as Array<keyof typeof requiredTagsRegExp>;
+export const otherTags: Array<keyof typeof otherTagsRegExp> = Object.keys(
+  otherTagsRegExp,
+) as Array<keyof typeof otherTagsRegExp>;
 export const tags = Object.assign({}, requiredTagsRegExp, otherTagsRegExp);
 const space = `(?:x[1-8]?)`;
 const stack = `(?:[12]+[SC]?)`;
