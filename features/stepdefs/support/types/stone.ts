@@ -1,5 +1,5 @@
 import { defineParameterType, Transform } from 'cucumber';
-import { StoneType } from '../../../lib/Stone';
+import { StoneType } from '../../../../lib';
 import { getPlayerByColor } from './Player';
 
 const stone: Transform = {
@@ -8,7 +8,9 @@ const stone: Transform = {
   regexp: /(?:(?:(?:flat)|(?:standing)) (?:(?:black)|(?:white)) stone)|(?:(?:(?:black)|(?:white)) capstone)/,
   transformer: (x) => {
     // eslint-disable-next-line max-len
-    const match = /(((?:flat)|(?:standing)) ((?:black)|(?:white)) stone)|(((?:black)|(?:white)) capstone)/.exec(x)!;
+    const match = /(((?:flat)|(?:standing)) ((?:black)|(?:white)) stone)|(((?:black)|(?:white)) capstone)/.exec(
+      x,
+    )!;
     // is a stone (not a capstone)
     if (match[1]) {
       // color is in group 3 if we don't have a cap stone

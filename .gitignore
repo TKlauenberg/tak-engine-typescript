@@ -1,6 +1,7 @@
 node_modules
 docs
 lib
+target
 features/**/*.js
 src/**/*.js
 *.js.map

@@ -3,7 +3,7 @@ Feature: Parse PTN File
     I want to read PTN Files
     So that I can start with initial Game State
     Scenario: PTN without a move
-        When I parse the PTN file
+        When Bop parse the PTN file
             """
             [Size "5"]
             """

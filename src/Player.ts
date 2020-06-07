@@ -5,6 +5,8 @@ export enum Player {
   One = 1,
   Two = 2,
 }
+export const colorFromPlayer = (player: Player): string =>
+  player === Player.One ? 'white' : 'black';
 export interface StoneBag {
   F: Stone[];
   C: Stone[];
@@ -112,26 +114,10 @@ export class PlayerInfo {
   public static createStoneBag(stones: GameStones, player: Player): StoneBag {
     const flats: Stone[] = Array(stones.F)
       .fill(1)
-      .map((_, index) => ({
-        type: StoneType.FLAT,
-        player,
-        movable: true,
-        position: {
-          square: '',
-          stack: index,
-        },
-      }));
+      .map((_) => new Stone(StoneType.FLAT, player));
     const cap: Stone[] = Array(stones.C)
       .fill(1)
-      .map((_, index) => ({
-        type: StoneType.CAP,
-        player,
-        movable: true,
-        position: {
-          square: '',
-          stack: index + flats.length,
-        },
-      }));
+      .map((_) => new Stone(StoneType.CAP, player));
     const stoneBag = { C: cap, F: flats };
     return stoneBag;
   }

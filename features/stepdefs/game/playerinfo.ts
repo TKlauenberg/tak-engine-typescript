@@ -1,19 +1,15 @@
 /* eslint-disable new-cap */
-/* eslint-disable no-invalid-this */
-import { expect } from 'chai';
+import { actorInTheSpotlight } from '@serenity-js/core';
 import { Then } from 'cucumber';
-import { Player, PlayerInfo } from '../../../lib/Player';
-import { Game } from '../../../lib';
+import { Player } from '../../../lib/Player';
+import { CheckThat } from '../support';
 
-Then('{player} has {int} normal stones and {int} capstones',
-    function(
-        player: Player,
-        normalStonesCount: number,
-        capstonesCount: number
-    ) {
-      const game = this.game as Game;
-      const playerInfo: PlayerInfo =
-        player === Player.One ? game.player1 : game.player2;
-      expect(playerInfo.normalStonesCount).to.equal(normalStonesCount);
-      expect(playerInfo.capstonesCount).to.equal(capstonesCount);
-    });
+Then(
+  '{player} has {int} normal stones and {int} capstones',
+  (player: Player, normalStonesCount: number, capstonesCount: number) =>
+    actorInTheSpotlight().attemptsTo(
+      CheckThat.thePlayer(player)
+        .has(normalStonesCount)
+        .stonesAnd(capstonesCount).capstones,
+    ),
+);

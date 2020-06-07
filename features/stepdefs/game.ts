@@ -1,109 +1,73 @@
 /* eslint-disable new-cap */
-/* eslint-disable no-invalid-this */
-import { expect } from 'chai';
+import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
 import { defineStep, TableDefinition, Then } from 'cucumber';
-import { Game, Square, Stone, StoneType, GameOptions } from '../../lib';
-import { Player } from '../../lib/Player';
+import { CheckThat, gameOptionsFromTable as fromTable } from './support';
+import { InitializeGame } from './support/screenplay/Tasks/InitializeGame';
 
 // Given and When step
-defineStep('the user initializes a game with the parameters',
-    function(dataTable: TableDefinition) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const options: { [key: string]: string | number } = dataTable.rowsHash();
-      for (const key of Object.keys(options)) {
-        const option = (options[key] as string);
-        if (/^[0-9,]+$/.test(option)) {
-          const int = Number.parseInt(option);
-          const float = Number.parseFloat(option);
-          if (!isNaN(int)) {
-            options[key] = int;
-          } else if (!isNaN(float)) {
-            options[key] = float;
-          }
-        }
-      }
-      // cast needed because we want the step to fail if not all options apply
-      this.game = new Game(options as unknown as GameOptions);
-    });
+defineStep(
+  'the user initializes a game with the parameters',
+  (datatable: TableDefinition) =>
+    actorCalled('gherkin').attemptsTo(
+      InitializeGame.withOptions(fromTable(datatable)),
+    ),
+);
 
 // stack is from bottom to top
-Then('On {pos} should be a stack with stones {string}',
-    function(pos: string, stack) {
-      const game = this.game as Game;
-      const square = game.board.getSquare(pos);
-      const squareStack = square.stones
-          .map((x) => x.player === Player.One ? 1 : 2).join('');
-      expect(stack).to.equal(squareStack);
-    });
+Then('On {pos} should be a stack with stones "{stack}"', (pos, stack) =>
+  actorInTheSpotlight().attemptsTo(CheckThat.onPos(pos).theStack.equals(stack)),
+);
 
-/**
- * Check if a stack on a square equals the stack given
- * @param {Game} game the game object
- * @param {string} position position to check
- * @param {Array<Stone>} stack Stones to check against
- */
-function checkStack(game: Game, position: string, ...stack: Stone[]) {
-  const square = game.board.getSquare(position);
-  square.stones.forEach((x, i) => {
-    // debug sting because then the chai-js output has more details
-    expect(x).to.include(stack[i], 'debug');
-  });
-  // expect(square.stones).to.deep.equal(stack);
-}
+Then(
+  'On {pos} should be a stack with a {stone} and a {stone}',
+  (pos, stone, stone2) =>
+    actorInTheSpotlight().attemptsTo(
+      CheckThat.onPos(pos).theStack.equals([stone, stone2]),
+    ),
+);
 
-Then('On {pos} should be a stack with a {stone} and a {stone}',
-    function(pos, stone, stone2) {
-      checkStack(this.game, pos, stone, stone2);
-    });
+Then('the top stone on {pos} should be {playerByColor}', (pos, player) =>
+  actorInTheSpotlight().attemptsTo(
+    CheckThat.onPos(pos).theTopStone.isFromPlayer(player),
+  ),
+);
 
-Then('the top stone on {pos} should be {playerByColor}', function(pos, player) {
-  const game = this.game as Game;
-  const square = game.board.getSquare(pos);
-  expect(square.top.player).to.equal(player);
-});
+Then(
+  'the top stone on {pos} should be of type {stoneType}',
+  (pos: string, stoneType) =>
+    actorInTheSpotlight().attemptsTo(
+      CheckThat.onPos(pos).theTopStone.isOfType(stoneType),
+    ),
+);
 
-Then('the top stone on {pos} should be of type {stoneType}',
-    function(pos: string, stoneType: StoneType) {
-      const game = this.game as Game;
-      const square = game.board.getSquare(pos);
-      expect(square.top.type).to.equal(stoneType);
-    });
+Then('the next Player should be {player}', (player) =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theNextPlayerIs(player)),
+);
 
-Then('the next Player should be {player}', function(player) {
-  const game = this.game as Game;
-  expect(game.currentPlayer.player).to.equal(player);
-});
+Then('the current Round should be {int}', (moveCount) =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theCurrentRoundIs(moveCount)),
+);
 
-Then('the current Round should be {int}', function(moveCount) {
-  const game = this.game as Game;
-  expect(game.moveCount).to.equal(moveCount);
-});
+Then('The size of the board is {int}', (size) =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theSizeOfTheBoardIs(size)),
+);
 
-Then('The size of the board is {int}', function(size) {
-  const game = this.game as Game;
-  expect(game.board.size).to.equal(size);
-  expect(game.size).to.equal(size);
-});
+Then('On {pos} is a {stone}', (pos, stone) =>
+  actorInTheSpotlight().attemptsTo(
+    CheckThat.onPos(pos).theStack.hasOnlyTheStone(stone),
+  ),
+);
 
-Then('On {pos} is a {stone}', function(pos, stone: Stone) {
-  const game = this.game as Game;
-  const square = game.board.getSquare(pos);
-  expect(square.stones).to.have.length(1);
-  expect(square.top).to.include(stone, 'debug');
-});
+Then('The board is empty', () =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theBoardIsEmpty()),
+);
 
-Then('The board is empty', function() {
-  const game = this.game as Game;
-  const board: Square[][] = game.board;
-  const isEmpty = board.every((x) => x.every((y) => y.stones.length === 0));
-  expect(isEmpty).to.be.true;
-});
+Then('the user should get an error', () =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theLastError.exists()),
+);
 
-Then('the user should get an error', function() {
-  expect(this.error).to.not.be.undefined;
-});
-
-Then('The error message should be {string}', function(errorMessage) {
-  const error = this.error as Error;
-  expect(error.message).to.equal(errorMessage);
-});
+Then('The error message should be {string}', (errorMessage) =>
+  actorInTheSpotlight().attemptsTo(
+    CheckThat.theLastError.hasTheMessage(errorMessage),
+  ),
+);

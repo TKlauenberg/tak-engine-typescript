@@ -1,10 +1,26 @@
 import { Result } from './interfaces';
-import { Player } from './Player';
+import { Player, colorFromPlayer } from './Player';
 
 export enum StoneType {
   FLAT = 'F',
   STANDING = 'S',
   CAP = 'C',
+}
+
+/**
+ *
+ * @param {StoneType} stoneType
+ * @return {string}
+ */
+export function textOfStoneType(stoneType: StoneType): string {
+  switch (stoneType) {
+    case StoneType.FLAT:
+      return 'flat stone';
+    case StoneType.STANDING:
+      return 'standing stone';
+    case StoneType.CAP:
+      return 'capstone';
+  }
 }
 
 /**
@@ -31,7 +47,28 @@ export function parseStoneType(stoneType: string): Result<StoneType> {
   }
 }
 
-export interface Stone {
-  type: StoneType;
-  player: Player;
+/**
+ * basic stone class
+ */
+export class Stone {
+  public type: StoneType;
+  public player: Player;
+  /**
+   *
+   * @param {StoneType} type type of the stone
+   * @param {Player} player player of the stone
+   */
+  constructor(type: StoneType, player: Player) {
+    this.type = type;
+    this.player = player;
+  }
+  /**
+   * string representation of the stone
+   * @return {string}
+   */
+  toString(): string {
+    const color = colorFromPlayer(this.player);
+    const stone = textOfStoneType(this.type);
+    return `${color} ${stone}`;
+  }
 }

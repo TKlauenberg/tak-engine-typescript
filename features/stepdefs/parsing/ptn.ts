@@ -1,20 +1,16 @@
 /* eslint-disable new-cap */
-/* eslint-disable no-invalid-this */
-import { expect } from 'chai';
+import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
 import { Then, When } from 'cucumber';
-import { parse } from '../../../lib/ptn';
+import { CheckThat, InitializeGame } from '../support';
 
-When('I parse the PTN file', function(docString) {
-  const [result, gameOrError] = parse(docString);
-  this.parsingResult = result;
-  this.game = gameOrError;
-  this.error = gameOrError;
-});
+When('{word} parse the PTN file', (actor, docString) =>
+  actorCalled(actor).attemptsTo(InitializeGame.withPtn(docString)),
+);
 
-Then('The parsing should be unsuccessful', function() {
-  expect(this.parsingResult).to.be.false;
-});
+Then('The parsing should be unsuccessful', () =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theParsing.wasUnsuccessfull()),
+);
 
-Then('The parsing should be successful', function() {
-  expect(this.parsingResult).to.be.true;
-});
+Then('The parsing should be successful', () =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theParsing.wasSuccessfull()),
+);

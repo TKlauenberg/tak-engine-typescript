@@ -1,13 +1,12 @@
 /* eslint-disable new-cap */
-/* eslint-disable no-invalid-this */
-import { expect } from 'chai';
+import { actorInTheSpotlight } from '@serenity-js/core';
 import { Then } from 'cucumber';
-import { Game } from '../../../lib';
+import { CheckThat } from '../support';
 
-Then('the game ends', function() {
-  expect((this.game as Game).hasEnded).to.be.true;
-});
+Then('the game ends', () =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theGame.hasEnded()),
+);
 
-Then('the result is {string}', function(result) {
-  expect((this.game as Game).result).to.equal(result);
-});
+Then('the result is {string}', (result) =>
+  actorInTheSpotlight().attemptsTo(CheckThat.theGame.hasTheResult(result)),
+);

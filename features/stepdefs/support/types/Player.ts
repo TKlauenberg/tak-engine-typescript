@@ -1,5 +1,5 @@
 import { defineParameterType, Transform } from 'cucumber';
-import { Player } from '../../../lib/Player';
+import { Player } from '../../../../lib/Player';
 
 /**
  * transform color to Player enum
@@ -17,11 +17,15 @@ export function getPlayerByColor(color: string): Player {
  */
 export function getPlayerByNumber(playerNumber: number | string): Player {
   // eslint-disable-next-line max-len
-  const x = typeof playerNumber === 'string' ? parseInt(playerNumber) : playerNumber;
+  const x =
+    typeof playerNumber === 'string' ? parseInt(playerNumber) : playerNumber;
   switch (x) {
-    case 1: return Player.One;
-    case 2: return Player.Two;
-    default: throw new Error(`there is no player ${x}`);
+    case 1:
+      return Player.One;
+    case 2:
+      return Player.Two;
+    default:
+      throw new Error(`there is no player ${x}`);
   }
 }
 const playerColor: Transform = {
