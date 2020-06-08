@@ -54,3 +54,8 @@ Feature: Move Validation
         When Bop tries to move 2 stones from a1 up with all stones
         Then Bop should get an error
         And The error message should be "Can only flatten a wall with one capstone"
+
+    Scenario: Move a stone from the wrong Player
+        When Bop tries to move one stone from a1 up
+        Then Bop should get an error
+        And The error message should be "Player doesn't control that square"

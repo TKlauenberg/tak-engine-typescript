@@ -138,6 +138,9 @@ export function excecuteMove<T extends Square[][]>(
     }
   } else {
     const square = Board.getSquare(board, move.position);
+    if (square.top.player !== player.player) {
+      return [false, new Error("Player doesn't control that square")];
+    }
     let stones: Stone[];
     try {
       stones = square.take(move.amount);
