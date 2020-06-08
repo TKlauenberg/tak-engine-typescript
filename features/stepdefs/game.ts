@@ -6,9 +6,9 @@ import { InitializeGame } from './support/screenplay/Tasks/InitializeGame';
 
 // Given and When step
 defineStep(
-  'the user initializes a game with the parameters',
-  (datatable: TableDefinition) =>
-    actorCalled('gherkin').attemptsTo(
+  '{word} initializes a game with the parameters',
+  (actor, datatable: TableDefinition) =>
+    actorCalled(actor).attemptsTo(
       InitializeGame.withOptions(fromTable(datatable)),
     ),
 );
@@ -62,8 +62,8 @@ Then('The board is empty', () =>
   actorInTheSpotlight().attemptsTo(CheckThat.theBoardIsEmpty()),
 );
 
-Then('the user should get an error', () =>
-  actorInTheSpotlight().attemptsTo(CheckThat.theLastError.exists()),
+Then('{word} should get an error', (actor) =>
+  actorCalled(actor).attemptsTo(CheckThat.theLastError.exists()),
 );
 
 Then('The error message should be {string}', (errorMessage) =>

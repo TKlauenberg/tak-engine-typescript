@@ -5,7 +5,7 @@ Feature: Playerinfo in a current game
     So that I know my own game state
 
     Scenario Outline: On game start
-        When the user initializes a game with the parameters
+        When Bop initializes a game with the parameters
             | size | <size> |
         Then Player 1 has <amountNormal> normal stones and <amountCap> capstones
         And Player 2 has <amountNormal> normal stones and <amountCap> capstones
@@ -18,10 +18,10 @@ Feature: Playerinfo in a current game
             | 8    | 50           | 2         |
 
     Scenario Outline: Player Info after first round
-        Given the user initializes a game with the parameters
+        Given Bop initializes a game with the parameters
             | size | <size> |
-        When the user places a flat stone at a1
-        And the user places a flat stone at a2
+        When Bop places a flat stone at a1
+        And Bop places a flat stone at a2
         Then Player 1 has <amountNormal> normal stones and <amountCap> capstones
         And Player 2 has <amountNormal> normal stones and <amountCap> capstones
         Examples:
@@ -30,12 +30,12 @@ Feature: Playerinfo in a current game
             | 8    | 49           | 2         |
 
     Scenario Outline: special Stones
-        Given the user initializes a game with the parameters
+        Given Bop initializes a game with the parameters
             | size | <size> |
-        And the user places a flat stone at a1
-        And the user places a flat stone at a2
-        When the user places a <stoneType> at a3
-        And the user places a <stoneType> at b1
+        And Bop places a flat stone at a1
+        And Bop places a flat stone at a2
+        When Bop places a <stoneType> at a3
+        And Bop places a <stoneType> at b1
         Then Player 1 has <amountNormal> normal stones and <amountCap> capstones
         And Player 2 has <amountNormal> normal stones and <amountCap> capstones
         Examples:

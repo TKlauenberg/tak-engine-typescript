@@ -5,7 +5,7 @@ Feature: Game initialization
     So that I start a Game
 
     Scenario Outline: needed parameters
-        When the user initializes a game with the parameters
+        When Bop initializes a game with the parameters
             | size | <size> |
         Then The size of the board is <size>
         And The board is empty
