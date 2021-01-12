@@ -38,7 +38,7 @@ defineParameterType(playerColor);
 const player: Transform = {
   name: 'player',
   regexp: /[pP]layer [12]/,
-  transformer: (x) => {
+  transformer: (x: string) => {
     const playerNumber = /[pP]layer ([12])/.exec(x)![1];
     return getPlayerByNumber(playerNumber);
   },

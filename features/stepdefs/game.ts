@@ -3,56 +3,63 @@ import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
 import { defineStep, TableDefinition, Then } from 'cucumber';
 import { CheckThat, gameOptionsFromTable as fromTable } from './support';
 import { InitializeGame } from './support/screenplay/Tasks/InitializeGame';
+import { Stone, Player, StoneType } from '../../lib';
 
 // Given and When step
 defineStep(
   '{word} initializes a game with the parameters',
-  (actor, datatable: TableDefinition) =>
+  (actor: string, datatable: TableDefinition) =>
     actorCalled(actor).attemptsTo(
       InitializeGame.withOptions(fromTable(datatable)),
     ),
 );
 
 // stack is from bottom to top
-Then('On {pos} should be a stack with stones "{stack}"', (pos, stack) =>
-  actorInTheSpotlight().attemptsTo(CheckThat.onPos(pos).theStack.equals(stack)),
+Then(
+  'On {pos} should be a stack with stones "{stack}"',
+  (pos: string, stack: Stone[]) =>
+    actorInTheSpotlight().attemptsTo(
+      CheckThat.onPos(pos).theStack.equals(stack),
+    ),
 );
 
 Then(
   'On {pos} should be a stack with a {stone} and a {stone}',
-  (pos, stone, stone2) =>
+  (pos: string, stone: Stone, stone2: Stone) =>
     actorInTheSpotlight().attemptsTo(
       CheckThat.onPos(pos).theStack.equals([stone, stone2]),
     ),
 );
 
-Then('the top stone on {pos} should be {playerByColor}', (pos, player) =>
-  actorInTheSpotlight().attemptsTo(
-    CheckThat.onPos(pos).theTopStone.isFromPlayer(player),
-  ),
+Then(
+  'the top stone on {pos} should be {playerByColor}',
+  (pos: string, player: Player) =>
+    actorInTheSpotlight().attemptsTo(
+      CheckThat.onPos(pos).theTopStone.isFromPlayer(player),
+    ),
 );
 
 Then(
   'the top stone on {pos} should be of type {stoneType}',
-  (pos: string, stoneType) =>
+  (pos: string, stoneType: StoneType) =>
     actorInTheSpotlight().attemptsTo(
       CheckThat.onPos(pos).theTopStone.isOfType(stoneType),
     ),
 );
 
-Then('the next Player should be {player}', (player) =>
+Then('the next Player should be {player}', (player: Player) =>
   actorInTheSpotlight().attemptsTo(CheckThat.theNextPlayerIs(player)),
 );
 
-Then('the current Round should be {int}', (moveCount) =>
+Then('the current Round should be {int}', (moveCount: number) =>
   actorInTheSpotlight().attemptsTo(CheckThat.theCurrentRoundIs(moveCount)),
 );
 
-Then('The size of the board is {int}', (size) =>
+Then('The size of the board is {int}', (size: number) =>
   actorInTheSpotlight().attemptsTo(CheckThat.theSizeOfTheBoardIs(size)),
 );
 
-Then('On {pos} is a {stone}', (pos, stone) =>
+Then('On {pos} is a {stone}', (pos: string, stone: Stone) =>
   actorInTheSpotlight().attemptsTo(
     CheckThat.onPos(pos).theStack.hasOnlyTheStone(stone),
   ),
@@ -62,11 +69,11 @@ Then('The board is empty', () =>
   actorInTheSpotlight().attemptsTo(CheckThat.theBoardIsEmpty()),
 );
 
-Then('{word} should get an error', (actor) =>
+Then('{word} should get an error', (actor: string) =>
   actorCalled(actor).attemptsTo(CheckThat.theLastError.exists()),
 );
 
-Then('The error message should be {string}', (errorMessage) =>
+Then('The error message should be {string}', (errorMessage: string) =>
   actorInTheSpotlight().attemptsTo(
     CheckThat.theLastError.hasTheMessage(errorMessage),
   ),

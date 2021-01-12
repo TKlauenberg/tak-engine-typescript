@@ -5,7 +5,7 @@ const stack: Transform = {
   name: 'stack',
   // eslint-disable-next-line max-len
   regexp: /[12]*/,
-  transformer: (x) => {
+  transformer: (x: string) => {
     return x.split('').map((x) => {
       const player = Number.parseInt(x);
       return {

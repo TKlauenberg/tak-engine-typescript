@@ -3,7 +3,7 @@ import { parseStoneType, StoneType } from '../../../../lib';
 const stoneType: Transform = {
   name: 'stoneType',
   regexp: /[FSC]/,
-  transformer: (x) => {
+  transformer: (x: string) => {
     const [parseResult, type] = parseStoneType(x);
     if (parseResult) {
       return type;
@@ -16,7 +16,7 @@ defineParameterType(stoneType);
 const stoneTypeByName: Transform = {
   name: 'stoneTypeByName',
   regexp: /(flat stone)|(capstone)|(standing stone)/,
-  transformer: (x) => {
+  transformer: (x: string) => {
     const match = /(flat stone)|(capstone)|(standing stone)/.exec(x)!;
     if (match[1]) {
       return StoneType.FLAT;

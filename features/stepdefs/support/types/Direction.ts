@@ -5,7 +5,7 @@ const direction: Transform = {
   name: 'direction',
   // eslint-disable-next-line max-len
   regexp: /((?:up)|(?:\+)|(?:↑))|((?:down)|(?:-)|(?:↓))|((?:right)|(?:>)|(?:→))|((?:left)|(?:<)|(?:←))/,
-  transformer: (x): Direction => {
+  transformer: (x: string): Direction => {
     // eslint-disable-next-line max-len
     const match = /((?:up)|(?:\+)|(?:↑))|((?:down)|(?:-)|(?:↓))|((?:right)|(?:>)|(?:→))|((?:left)|(?:<)|(?:←))/.exec(
       x,

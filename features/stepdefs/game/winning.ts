@@ -7,6 +7,6 @@ Then('the game ends', () =>
   actorInTheSpotlight().attemptsTo(CheckThat.theGame.hasEnded()),
 );
 
-Then('the result is {string}', (result) =>
+Then('the result is {string}', (result: string) =>
   actorInTheSpotlight().attemptsTo(CheckThat.theGame.hasTheResult(result)),
 );

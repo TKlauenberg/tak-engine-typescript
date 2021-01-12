@@ -6,7 +6,7 @@ const stone: Transform = {
   name: 'stone',
   // eslint-disable-next-line max-len
   regexp: /(?:(?:(?:flat)|(?:standing)) (?:(?:black)|(?:white)) stone)|(?:(?:(?:black)|(?:white)) capstone)/,
-  transformer: (x) => {
+  transformer: (x: string) => {
     // eslint-disable-next-line max-len
     const match = /(((?:flat)|(?:standing)) ((?:black)|(?:white)) stone)|(((?:black)|(?:white)) capstone)/.exec(
       x,
