@@ -1,4 +1,5 @@
-import { defineParameterType, Transform } from 'cucumber';
+import { defineParameterType } from '@cucumber/cucumber';
+import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
 import { Player } from '../../../../lib/Player';
 
 /**
@@ -28,14 +29,14 @@ export function getPlayerByNumber(playerNumber: number | string): Player {
       throw new Error(`there is no player ${x}`);
   }
 }
-const playerColor: Transform = {
+const playerColor: IParameterTypeDefinition<Player> = {
   name: 'playerByColor',
   regexp: /(black)|(white)/,
   transformer: getPlayerByColor,
 };
 defineParameterType(playerColor);
 
-const player: Transform = {
+const player: IParameterTypeDefinition<Player> = {
   name: 'player',
   regexp: /[pP]layer [12]/,
   transformer: (x: string) => {

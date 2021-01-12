@@ -1,19 +1,21 @@
-import { defineParameterType, Transform } from 'cucumber';
+import { defineParameterType } from '@cucumber/cucumber';
+import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
 import { parseStoneType, StoneType } from '../../../../lib';
-const stoneType: Transform = {
+
+const stoneType: IParameterTypeDefinition<StoneType> = {
   name: 'stoneType',
   regexp: /[FSC]/,
   transformer: (x: string) => {
     const [parseResult, type] = parseStoneType(x);
     if (parseResult) {
-      return type;
+      return (type as StoneType);
     } else {
       throw Error;
     }
   },
 };
 defineParameterType(stoneType);
-const stoneTypeByName: Transform = {
+const stoneTypeByName: IParameterTypeDefinition<StoneType> = {
   name: 'stoneTypeByName',
   regexp: /(flat stone)|(capstone)|(standing stone)/,
   transformer: (x: string) => {

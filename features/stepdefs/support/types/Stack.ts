@@ -1,7 +1,8 @@
-import { defineParameterType, Transform } from 'cucumber';
-import { Player, StoneType } from '../../../../lib';
+import { defineParameterType } from '@cucumber/cucumber';
+import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
+import { Player, Stone, StoneType } from '../../../../lib';
 
-const stack: Transform = {
+const stack: IParameterTypeDefinition<Stone[]> = {
   name: 'stack',
   // eslint-disable-next-line max-len
   regexp: /[12]*/,

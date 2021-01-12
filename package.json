@@ -14,19 +14,18 @@
   "author": "Tobias Klauenberg",
   "license": "ISC",
   "devDependencies": {
-    "@serenity-js/assertions": "^2.10.2",
-    "@serenity-js/console-reporter": "^2.10.2",
-    "@serenity-js/core": "^2.10.2",
-    "@serenity-js/cucumber": "^2.10.2",
-    "@serenity-js/rest": "^2.10.2",
-    "@serenity-js/serenity-bdd": "^2.10.2",
-    "cucumber": "^6.0.5",
-    "eslint": "^7.2.0",
+    "@cucumber/cucumber": "^7.0.0",
+    "@serenity-js/assertions": "^2.19.10",
+    "@serenity-js/console-reporter": "^2.19.10",
+    "@serenity-js/core": "^2.19.10",
+    "@serenity-js/cucumber": "^2.19.10",
+    "@serenity-js/rest": "^2.19.10",
+    "@serenity-js/serenity-bdd": "^2.19.10",
+    "eslint": "^7.17.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.3",
-    "prettier": "^2.0.5",
-    "typescript": "^3.9.5"
-  },
-  "dependencies": {}
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
+  }
 }

@@ -93,12 +93,12 @@ export const CheckThat = {
   theNextPlayerIs: (player: IPlayer) =>
     Task.where(
       `#actor checks that the next player is Player ${player}`,
-      Ensure.that(nextPlayer(), equals(player)),
+      Ensure.that(nextPlayer, equals(player)),
     ),
   theCurrentRoundIs: (round: number) =>
     Task.where(
       `#actor checks that the current round is ${round}`,
-      Ensure.that(currentRound(), equals(round)),
+      Ensure.that(currentRound, equals(round)),
     ),
   theSizeOfTheBoardIs: (size: number) =>
     Task.where(

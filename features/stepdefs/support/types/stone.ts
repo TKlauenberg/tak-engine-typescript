@@ -1,8 +1,9 @@
-import { defineParameterType, Transform } from 'cucumber';
-import { StoneType } from '../../../../lib';
+import { defineParameterType } from '@cucumber/cucumber';
+import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
+import { Stone, StoneType } from '../../../../lib';
 import { getPlayerByColor } from './Player';
 
-const stone: Transform = {
+const stone: IParameterTypeDefinition<Stone> = {
   name: 'stone',
   // eslint-disable-next-line max-len
   regexp: /(?:(?:(?:flat)|(?:standing)) (?:(?:black)|(?:white)) stone)|(?:(?:(?:black)|(?:white)) capstone)/,

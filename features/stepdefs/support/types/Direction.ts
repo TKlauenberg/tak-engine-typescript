@@ -1,7 +1,8 @@
-import { defineParameterType, Transform } from 'cucumber';
+import { defineParameterType } from '@cucumber/cucumber';
+import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
 import { Direction } from '../../../../lib';
 
-const direction: Transform = {
+const direction: IParameterTypeDefinition<Direction> = {
   name: 'direction',
   // eslint-disable-next-line max-len
   regexp: /((?:up)|(?:\+)|(?:↑))|((?:down)|(?:-)|(?:↓))|((?:right)|(?:>)|(?:→))|((?:left)|(?:<)|(?:←))/,

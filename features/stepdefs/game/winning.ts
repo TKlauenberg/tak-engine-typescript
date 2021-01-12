@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 import { actorInTheSpotlight } from '@serenity-js/core';
-import { Then } from 'cucumber';
+import { Then } from '@cucumber/cucumber';
 import { CheckThat } from '../support';
 
 Then('the game ends', () =>

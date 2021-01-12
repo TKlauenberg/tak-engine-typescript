@@ -45,7 +45,7 @@ export class PlayTheGame implements Ability {
   /**
    * @return {Promise<boolean>}
    */
-  getResult(): Promise<boolean> {
+  getResult(): Promise<boolean|undefined> {
     return new Promise((res) => res(this.#result));
   }
   /**
@@ -55,7 +55,7 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game?.tps));
+    return new Promise((res) => res(this.#game!.tps));
   }
   /**
    * Create Game Instance from options
@@ -156,7 +156,7 @@ export class PlayTheGame implements Ability {
   /**
    * @return {Promise<Error>}
    */
-  lastError(): Promise<Error> {
+  lastError(): Promise<Error|undefined> {
     return new Promise((res) => res(this.#error));
   }
   /**
@@ -188,6 +188,6 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.result));
+    return new Promise((res) => res(this.#game!.result!));
   }
 }

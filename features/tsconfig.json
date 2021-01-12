@@ -3,20 +3,12 @@
         "./**/*"
     ],
     "compilerOptions": {
-        "allowJs": false,
-        "target": "es6",
-        "sourceMap": true,
-        "strict": true,
+        "target": "es2018",
+        "lib": ["es2018"],
         "module": "commonjs",
-        "allowSyntheticDefaultImports": true,
-        "lib": [
-            "es2015",
-            "es2015.generator",
-            "dom"
-        ],
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "incremental": true
-    }
+        "sourceMap": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true
+    },
 }

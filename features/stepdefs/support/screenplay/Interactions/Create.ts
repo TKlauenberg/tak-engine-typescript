@@ -1,4 +1,4 @@
-import { Interaction } from '@serenity-js/core';
+import { Interaction, UsesAbilities } from '@serenity-js/core';
 import { PlayTheGame } from '../Abilities';
 import { GameOptions } from '../../../../../lib';
 

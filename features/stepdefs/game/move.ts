@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 import { actorCalled } from '@serenity-js/core';
-import { When } from 'cucumber';
+import { When } from '@cucumber/cucumber';
 import { Direction, StoneType } from '../../../lib';
 import { Move, Place, TriesToMove, TriesToPlace } from '../support';
 

@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
-import { defineStep, TableDefinition, Then } from 'cucumber';
+import { defineStep, DataTable, Then } from '@cucumber/cucumber';
 import { CheckThat, gameOptionsFromTable as fromTable } from './support';
 import { InitializeGame } from './support/screenplay/Tasks/InitializeGame';
 import { Stone, Player, StoneType } from '../../lib';
@@ -8,7 +8,7 @@ import { Stone, Player, StoneType } from '../../lib';
 // Given and When step
 defineStep(
   '{word} initializes a game with the parameters',
-  (actor: string, datatable: TableDefinition) =>
+  (actor: string, datatable: DataTable) =>
     actorCalled(actor).attemptsTo(
       InitializeGame.withOptions(fromTable(datatable)),
     ),

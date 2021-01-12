@@ -1,12 +1,12 @@
-import { TableDefinition } from 'cucumber';
+import { DataTable } from '@cucumber/cucumber';
 import { GameOptions } from '../../../../lib';
 
 /**
  *
- * @param {TableDefinition} table cucumber table definition
+ * @param {DataTable} table cucumber table definition
  * @return {GameOptions}
  */
-export function gameOptionsFromTable(table: TableDefinition): GameOptions {
+export function gameOptionsFromTable(table: DataTable): GameOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const options: { [key: string]: string | number } = table.rowsHash();
   for (const key of Object.keys(options)) {
