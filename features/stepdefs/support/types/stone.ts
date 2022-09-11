@@ -1,17 +1,18 @@
 import { defineParameterType } from '@cucumber/cucumber';
-import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
-import { Stone, StoneType } from '../../../../lib';
+import { StoneType } from '../../../../lib';
 import { getPlayerByColor } from './Player';
 
-const stone: IParameterTypeDefinition<Stone> = {
+defineParameterType({
   name: 'stone',
   // eslint-disable-next-line max-len
-  regexp: /(?:(?:(?:flat)|(?:standing)) (?:(?:black)|(?:white)) stone)|(?:(?:(?:black)|(?:white)) capstone)/,
+  regexp:
+    /(?:(?:(?:flat)|(?:standing)) (?:(?:black)|(?:white)) stone)|(?:(?:(?:black)|(?:white)) capstone)/,
   transformer: (x: string) => {
     // eslint-disable-next-line max-len
-    const match = /(((?:flat)|(?:standing)) ((?:black)|(?:white)) stone)|(((?:black)|(?:white)) capstone)/.exec(
-      x,
-    )!;
+    const match =
+      /(((?:flat)|(?:standing)) ((?:black)|(?:white)) stone)|(((?:black)|(?:white)) capstone)/.exec(
+        x,
+      )!;
     // is a stone (not a capstone)
     if (match[1]) {
       // color is in group 3 if we don't have a cap stone
@@ -35,5 +36,4 @@ const stone: IParameterTypeDefinition<Stone> = {
       };
     }
   },
-};
-defineParameterType(stone);
+});

@@ -1,5 +1,4 @@
 import { defineParameterType } from '@cucumber/cucumber';
-import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
 import { Player } from '../../../../lib/Player';
 
 /**
@@ -10,6 +9,12 @@ import { Player } from '../../../../lib/Player';
 export function getPlayerByColor(color: string): Player {
   return color === 'white' ? Player.One : Player.Two;
 }
+
+defineParameterType({
+  name: 'playerByColor',
+  regexp: /(black)|(white)/,
+  transformer: getPlayerByColor,
+});
 
 /**
  * transform number to Player enum
@@ -29,19 +34,12 @@ export function getPlayerByNumber(playerNumber: number | string): Player {
       throw new Error(`there is no player ${x}`);
   }
 }
-const playerColor: IParameterTypeDefinition<Player> = {
-  name: 'playerByColor',
-  regexp: /(black)|(white)/,
-  transformer: getPlayerByColor,
-};
-defineParameterType(playerColor);
 
-const player: IParameterTypeDefinition<Player> = {
+defineParameterType({
   name: 'player',
   regexp: /[pP]layer [12]/,
   transformer: (x: string) => {
     const playerNumber = /[pP]layer ([12])/.exec(x)![1];
     return getPlayerByNumber(playerNumber);
   },
-};
-defineParameterType(player);
+});

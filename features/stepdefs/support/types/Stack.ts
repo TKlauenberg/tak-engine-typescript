@@ -1,8 +1,7 @@
 import { defineParameterType } from '@cucumber/cucumber';
-import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
-import { Player, Stone, StoneType } from '../../../../lib';
+import { Player, StoneType } from '../../../../lib';
 
-const stack: IParameterTypeDefinition<Stone[]> = {
+defineParameterType({
   name: 'stack',
   // eslint-disable-next-line max-len
   regexp: /[12]*/,
@@ -15,5 +14,4 @@ const stack: IParameterTypeDefinition<Stone[]> = {
       };
     });
   },
-};
-defineParameterType(stack);
+});

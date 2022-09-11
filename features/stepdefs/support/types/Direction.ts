@@ -1,8 +1,7 @@
 import { defineParameterType } from '@cucumber/cucumber';
-import { IParameterTypeDefinition } from '@cucumber/cucumber/lib/support_code_library_builder/types';
 import { Direction } from '../../../../lib';
 
-const direction: IParameterTypeDefinition<Direction> = {
+defineParameterType({
   name: 'direction',
   // eslint-disable-next-line max-len
   regexp:
@@ -18,5 +17,4 @@ const direction: IParameterTypeDefinition<Direction> = {
       return Direction.Left;
     }
   },
-};
-defineParameterType(direction);
+});
