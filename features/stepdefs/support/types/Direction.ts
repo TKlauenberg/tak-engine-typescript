@@ -5,17 +5,14 @@ import { Direction } from '../../../../lib';
 const direction: IParameterTypeDefinition<Direction> = {
   name: 'direction',
   // eslint-disable-next-line max-len
-  regexp: /((?:up)|(?:\+)|(?:↑))|((?:down)|(?:-)|(?:↓))|((?:right)|(?:>)|(?:→))|((?:left)|(?:<)|(?:←))/,
-  transformer: (x: string): Direction => {
-    // eslint-disable-next-line max-len
-    const match = /((?:up)|(?:\+)|(?:↑))|((?:down)|(?:-)|(?:↓))|((?:right)|(?:>)|(?:→))|((?:left)|(?:<)|(?:←))/.exec(
-      x,
-    )!;
-    if (match[1] !== undefined) {
+  regexp:
+    /((?:up)|(?:\+)|(?:↑))|((?:down)|(?:-)|(?:↓))|((?:right)|(?:>)|(?:→))|((?:left)|(?:<)|(?:←))/,
+  transformer: (up: string, down: string, right: string): Direction => {
+    if (up !== undefined) {
       return Direction.Up;
-    } else if (match[2] !== undefined) {
+    } else if (down !== undefined) {
       return Direction.Down;
-    } else if (match[3] !== undefined) {
+    } else if (right !== undefined) {
       return Direction.Right;
     } else {
       return Direction.Left;

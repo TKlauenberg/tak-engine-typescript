@@ -18,11 +18,10 @@ defineParameterType(stoneType);
 const stoneTypeByName: IParameterTypeDefinition<StoneType> = {
   name: 'stoneTypeByName',
   regexp: /(flat stone)|(capstone)|(standing stone)/,
-  transformer: (x: string) => {
-    const match = /(flat stone)|(capstone)|(standing stone)/.exec(x)!;
-    if (match[1]) {
+  transformer: (flat: string, cap: string) => {
+    if (flat!==undefined) {
       return StoneType.FLAT;
-    } else if (match[2]) {
+    } else if (cap!==undefined) {
       return StoneType.CAP;
     } else {
       return StoneType.STANDING;
