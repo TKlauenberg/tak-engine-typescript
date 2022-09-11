@@ -1,9 +1,4 @@
-import {
-  Question,
-  Answerable,
-  AnswersQuestions,
-  UsesAbilities,
-} from '@serenity-js/core';
+import { Answerable, Question } from '@serenity-js/core';
 
 interface ObjectWithLength {
   length: number;

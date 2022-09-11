@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
-import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
 import { Then, When } from '@cucumber/cucumber';
+import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
 import { CheckThat, InitializeGame } from '../support';
 
 When('{word} parse the PTN file', (actor: string, docString: string) =>

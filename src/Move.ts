@@ -1,18 +1,25 @@
 import { Board } from './Board';
 import { grammar } from './grammar';
-import { Result } from './interfaces';
 import { PlayerInfo } from './Player';
+import { Result } from './Result';
 import { Square } from './Square';
 import { Stone, StoneType } from './Stone';
 
+// TODO check if eslint can handle enum types
 export enum MoveType {
+  // eslint-disable-next-line no-unused-vars
   Place = 'Place',
+  // eslint-disable-next-line no-unused-vars
   Move = 'Move',
 }
 export enum Direction {
+  // eslint-disable-next-line no-unused-vars
   Up = '+',
+  // eslint-disable-next-line no-unused-vars
   Down = '-',
+  // eslint-disable-next-line no-unused-vars
   Left = '<',
+  // eslint-disable-next-line no-unused-vars
   Right = '>',
 }
 export interface Place {

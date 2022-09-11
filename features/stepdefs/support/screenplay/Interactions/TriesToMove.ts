@@ -14,7 +14,7 @@ export const TriesToMove = (amount: number) => {
         moving(direction: Direction) {
           return {
             droppingOneStoneOnEachSquare() {
-              const drops = new Array(amount).fill(1);
+              const drops = new Array<number>(amount).fill(1);
               return new TryMoveStones(amount, position, direction, drops);
             },
             movingTheCompleteStack: () =>

@@ -1,4 +1,4 @@
-import { Cast, Actor } from '@serenity-js/core';
+import { Actor, Cast } from '@serenity-js/core';
 import { PlayTheGame } from './Abilities';
 
 /**

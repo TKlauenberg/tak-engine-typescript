@@ -1,9 +1,9 @@
 /* eslint-disable new-cap */
+import { DataTable, Given, Then } from '@cucumber/cucumber';
 import { actorCalled, actorInTheSpotlight } from '@serenity-js/core';
-import { DataTable, Then, Given } from '@cucumber/cucumber';
+import { Player, Stone, StoneType } from '../../lib';
 import { CheckThat, gameOptionsFromTable as fromTable } from './support';
 import { InitializeGame } from './support/screenplay/Tasks/InitializeGame';
-import { Stone, Player, StoneType } from '../../lib';
 
 // Given and When step
 Given(

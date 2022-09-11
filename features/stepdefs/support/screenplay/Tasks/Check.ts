@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Ensure, equals, isTrue, isFalse } from '@serenity-js/assertions';
+import { Ensure, equals, isFalse, isTrue } from '@serenity-js/assertions';
 import { Task } from '@serenity-js/core';
 import { Player as IPlayer, Stone, StoneType } from '../../../../../lib';
 import {
@@ -15,8 +15,8 @@ import {
   Stack,
   TheGame,
   TopStone,
-  Type,
   Tps,
+  Type,
 } from '../Questions';
 
 const checkPlayerNormalStones = (player: IPlayer, amount: number) =>

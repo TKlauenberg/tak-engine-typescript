@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {
+  AnswersQuestions,
   Interaction,
   UsesAbilities,
-  AnswersQuestions,
 } from '@serenity-js/core';
 import { PlayTheGame } from '..';
-import { parse, Move, Place } from '../../../../../lib/Move';
+import { Move, parse, Place } from '../../../../../lib/Move';
 
 export const Execute = {
   theMoves: (...moves: string[]) => new ExecuteMoves(moves),

@@ -1,8 +1,7 @@
-import { ParsingError } from './Errors';
 import { Game, GameOptions } from './Game';
 import { grammar, requiredTags } from './grammar';
-import { Result } from './interfaces';
 import { Action, parse as parseMove } from './Move';
+import { Result } from './Result';
 import { Tag } from './Tag';
 
 /**
@@ -23,10 +22,10 @@ export function parse(text: string): Result<Game> {
   while (headerLine !== null) {
     const [result, tag] = Tag.parse(headerLine[0]);
     if (result) {
-      tags.push(tag as Tag);
+      tags.push(tag);
       headerLine = grammar.tag.exec(headerText)!;
     } else {
-      return [false, tag as ParsingError];
+      return [false, tag];
     }
   }
   const missingTags = requiredTags.filter(
@@ -69,9 +68,8 @@ export function parse(text: string): Result<Game> {
   // parse Moves
   if (body) {
     // eslint-disable-next-line max-len
-    let moveLines: RegExpMatchArray | undefined = grammar.moveGrouped.exec(
-      body,
-    )!;
+    let moveLines: RegExpMatchArray | undefined =
+      grammar.moveGrouped.exec(body)!;
     let line = game.moveCount;
     const moves: Action[] = [];
     // if we have a tps string,
@@ -87,9 +85,9 @@ export function parse(text: string): Result<Game> {
       }
       const [parseSuccess, move] = parseMove(moveLines[3].trim());
       if (parseSuccess) {
-        moves.push(move as Action);
+        moves.push(move);
       } else {
-        return [false, move as Error];
+        return [false, move];
       }
       // eslint-disable-next-line max-len
       moveLines = moveLines[10]
@@ -107,15 +105,15 @@ export function parse(text: string): Result<Game> {
       }
       const [firstParseSuccess, firstMove] = parseMove(moveLines[3].trim());
       if (firstParseSuccess) {
-        moves.push(firstMove as Action);
+        moves.push(firstMove);
       } else {
-        return [false, firstMove as Error];
+        return [false, firstMove];
       }
       const [seccondParseSuccess, seccondMove] = parseMove(moveLines[5].trim());
       if (seccondParseSuccess) {
-        moves.push(seccondMove as Action);
+        moves.push(seccondMove);
       } else {
-        return [false, seccondMove as Error];
+        return [false, seccondMove];
       }
       // eslint-disable-next-line max-len
       moveLines = moveLines[10]

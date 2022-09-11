@@ -1,5 +1,5 @@
-import { AnswersQuestions, Question, Answerable } from '@serenity-js/core';
-import { Player as PlayerFromLib, Stone, PlayerInfo } from '../../../../../lib';
+import { Answerable, Question } from '@serenity-js/core';
+import { Player as PlayerFromLib, PlayerInfo, Stone } from '../../../../../lib';
 import { PlayTheGame } from '../Abilities';
 
 export const Player = {

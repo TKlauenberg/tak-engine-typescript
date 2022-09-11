@@ -1,8 +1,11 @@
 import { GameStones, isGameStones } from './Board';
 import { Stone, StoneType } from './Stone';
 
+// TODO check if eslint can handle enum types
 export enum Player {
+  // eslint-disable-next-line no-unused-vars
   One = 1,
+  // eslint-disable-next-line no-unused-vars
   Two = 2,
 }
 export const colorFromPlayer = (player: Player): string =>
@@ -114,10 +117,10 @@ export class PlayerInfo {
   public static createStoneBag(stones: GameStones, player: Player): StoneBag {
     const flats: Stone[] = Array(stones.F)
       .fill(1)
-      .map((_) => new Stone(StoneType.FLAT, player));
+      .map(() => new Stone(StoneType.FLAT, player));
     const cap: Stone[] = Array(stones.C)
       .fill(1)
-      .map((_) => new Stone(StoneType.CAP, player));
+      .map(() => new Stone(StoneType.CAP, player));
     const stoneBag = { C: cap, F: flats };
     return stoneBag;
   }

@@ -1,8 +1,8 @@
 import { Board } from './Board';
 import { ParsingError } from './Errors';
 import { grammar } from './grammar';
-import { Result } from './interfaces';
 import { Player, PlayerInfo } from './Player';
+import { Result } from './Result';
 import { Square } from './Square';
 import { parseStoneType, Stone, StoneType } from './Stone';
 
@@ -21,10 +21,10 @@ const startColumnCharCode = 'a'.charCodeAt(0);
  * @return {Result<Board>} Board object of tps
  */
 function parseBoard(
-    tpsPart: string,
-    boardSize: number,
-    player1: PlayerInfo,
-    player2: PlayerInfo,
+  tpsPart: string,
+  boardSize: number,
+  player1: PlayerInfo,
+  player2: PlayerInfo,
 ): Result<Square[][]> {
   let rest = tpsPart;
   // rows will be added top to bottom because tps starts at top row
@@ -43,10 +43,10 @@ function parseBoard(
         for (let i = 0; i < countSquares; i++) {
           // use zero index cause the we always add a new first line
           board[0].push(
-              new Square(
-                  `${String.fromCharCode(currentPosition)}${currentRow}`,
-                  boardSize,
-              ),
+            new Square(
+              `${String.fromCharCode(currentPosition)}${currentRow}`,
+              boardSize,
+            ),
           );
           currentPosition++;
         }
@@ -59,9 +59,9 @@ function parseBoard(
         if (isNaN(parseInt(stack[stack.length - 1]))) {
           const [parseResult, stone] = parseStoneType(stack[stack.length - 1]);
           if (parseResult) {
-            topStoneType = stone as StoneType;
+            topStoneType = stone;
           } else {
-            return [false, stone as Error];
+            return [false, stone];
           }
           stack = stack.slice(0, -1);
         }
@@ -113,10 +113,10 @@ function parseBoard(
  * @return {TPS} information of the board, next player and the movecount
  */
 export function parse(
-    tpsString: string,
-    boardSize: number,
-    player1: PlayerInfo,
-    player2: PlayerInfo,
+  tpsString: string,
+  boardSize: number,
+  player1: PlayerInfo,
+  player2: PlayerInfo,
 ): Result<TPS> {
   const parts = grammar.tpsGrouped.exec(tpsString)!;
   if (!parts[1]) {
@@ -129,10 +129,10 @@ export function parse(
       return [false, new Error('Missing next Movecount from TPS')];
     }
     const [boardResult, board] = parseBoard(
-        parts[1],
-        boardSize,
-        player1,
-        player2,
+      parts[1],
+      boardSize,
+      player1,
+      player2,
     );
     if (boardResult) {
       const tps: TPS = {
@@ -142,7 +142,7 @@ export function parse(
       };
       return [true, tps];
     } else {
-      return [false, board as Error];
+      return [false, board];
     }
   }
 }

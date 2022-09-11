@@ -1,9 +1,13 @@
-import { Result } from './interfaces';
-import { Player, colorFromPlayer } from './Player';
+import { colorFromPlayer, Player } from './Player';
+import { Result } from './Result';
 
+// TODO check if eslint can handle enum types
 export enum StoneType {
+  // eslint-disable-next-line no-unused-vars
   FLAT = 'F',
+  // eslint-disable-next-line no-unused-vars
   STANDING = 'S',
+  // eslint-disable-next-line no-unused-vars
   CAP = 'C',
 }
 

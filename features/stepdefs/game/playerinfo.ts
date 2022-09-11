@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
-import { actorInTheSpotlight } from '@serenity-js/core';
 import { Then } from '@cucumber/cucumber';
+import { actorInTheSpotlight } from '@serenity-js/core';
 import { Player } from '../../../lib/Player';
 import { CheckThat } from '../support';
 

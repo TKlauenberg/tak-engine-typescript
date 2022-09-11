@@ -1,5 +1,5 @@
 import { GameResult } from '.';
-import { Board, GameStones, getStoneCount } from './Board';
+import { Board, getStoneCount } from './Board';
 import { Action, excecuteMove } from './Move';
 import { Player, PlayerInfo, StoneBag } from './Player';
 import { Square } from './Square';
@@ -146,7 +146,7 @@ export class Game {
       throw new Error(`Bord Size is not valid! Bord size is ${options.size}`);
     }
     this.size = options.size;
-    const gameStones = stoneBagOrError as GameStones;
+    const gameStones = stoneBagOrError;
     const player1Name = options.player1 || 'white';
     this.player1 = new PlayerInfo(player1Name, Player.One, gameStones);
     const player2Name = options.player2 || 'black';
@@ -240,7 +240,7 @@ export class Game {
           this.moveCount++;
         }
       }
-      this.board = newBoardOrError as Board;
+      this.board = newBoardOrError;
       return this;
     } else {
       throw newBoardOrError;

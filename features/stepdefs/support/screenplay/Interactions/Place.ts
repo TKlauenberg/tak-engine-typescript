@@ -1,9 +1,9 @@
 import {
+  AnswersQuestions,
   Interaction,
   UsesAbilities,
-  AnswersQuestions,
 } from '@serenity-js/core';
-import { StoneType, Place as PlaceMove, MoveType } from '../../../../../lib';
+import { MoveType, Place as PlaceMove, StoneType } from '../../../../../lib';
 import { PlayTheGame } from '../Abilities/PlayTheGame';
 
 export const FlatStone = StoneType.FLAT;

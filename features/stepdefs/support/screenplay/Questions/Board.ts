@@ -1,6 +1,6 @@
 import { Question } from '@serenity-js/core';
-import { PlayTheGame } from '../Abilities';
 import { Board as IBoard } from '../../../../../lib';
+import { PlayTheGame } from '../Abilities';
 
 const ofTheGame = (): Question<Promise<IBoard>> =>
   Question.about('board of the game', (actor) =>

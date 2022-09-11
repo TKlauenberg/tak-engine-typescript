@@ -1,6 +1,6 @@
-import { Interaction, UsesAbilities } from '@serenity-js/core';
-import { PlayTheGame } from '../Abilities';
+import { Interaction } from '@serenity-js/core';
 import { GameOptions } from '../../../../../lib';
+import { PlayTheGame } from '../Abilities';
 
 const withOptions = (options: GameOptions): Interaction =>
   Interaction.where('#actor initializes a Game with Gameoptions', (actor) =>

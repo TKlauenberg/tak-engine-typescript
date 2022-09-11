@@ -1,2 +1,2 @@
-export * from './InitializeGame';
 export * from './Check';
+export * from './InitializeGame';

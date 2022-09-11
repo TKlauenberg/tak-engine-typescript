@@ -7,7 +7,7 @@ defineParameterType({
   transformer: (x: string) => {
     const [parseResult, type] = parseStoneType(x);
     if (parseResult) {
-      return type as StoneType;
+      return type;
     } else {
       throw Error;
     }

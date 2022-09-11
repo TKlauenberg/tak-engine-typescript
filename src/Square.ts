@@ -1,10 +1,15 @@
 import { ICloneable } from './interfaces';
 import { Stone, StoneType } from './Stone';
 
+// TODO check if eslint can handle enum types
 export enum Edge {
+  // eslint-disable-next-line no-unused-vars
   Top = 1,
+  // eslint-disable-next-line no-unused-vars
   Bottom = 2,
+  // eslint-disable-next-line no-unused-vars
   Left = 4,
+  // eslint-disable-next-line no-unused-vars
   Right = 8,
 }
 

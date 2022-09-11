@@ -1,6 +1,7 @@
-import { ICloneable, Result } from './interfaces';
+import { ICloneable } from './interfaces';
 import { Direction } from './Move';
 import { Player } from './Player';
+import { Result } from './Result';
 import { Square } from './Square';
 import { StoneType } from './Stone';
 import { filterUndefined, range } from './util';
@@ -12,17 +13,25 @@ const stoneCounts = new Map([
   [6, { F: 30, C: 1, total: 31 }],
   [8, { F: 50, C: 2, total: 52 }],
 ]);
-enum Edge {
+
+// TODO check if eslint can trace the enum?
+// eslint-disable-next-line no-unused-vars
+enum Edges {
+  // eslint-disable-next-line no-unused-vars
   None = 0,
+  // eslint-disable-next-line no-unused-vars
   Top = 1,
+  // eslint-disable-next-line no-unused-vars
   Bottom = 2,
+  // eslint-disable-next-line no-unused-vars
   Left = 4,
+  // eslint-disable-next-line no-unused-vars
   Right = 8,
 }
-const TopToBottom = Edge.Top | Edge.Bottom;
-const LeftToRight = Edge.Left | Edge.Right;
+const TopToBottom = Edges.Top | Edges.Bottom;
+const LeftToRight = Edges.Left | Edges.Right;
 
-type RoadSquare = Square & { edges: Edge };
+type RoadSquare = Square & { edges: Edges };
 export interface GameStones {
   F: number;
   C: number;
@@ -282,20 +291,20 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
    * check which edges a Square has
    * @param {Array<Array<Square>>}  board minimal info about the board
    * @param {string} position the position of the sqare
-   * @return {Edge}
+   * @return {Edges}
    */
-  private static getEdges(board: Square[][], position: string): Edge {
+  private static getEdges(board: Square[][], position: string): Edges {
     const [x, y] = Board.getPosition(position);
-    let edge: Edge = Edge.None;
+    let edge: Edges = Edges.None;
     if (x === 0) {
-      edge += Edge.Left;
+      edge += Edges.Left;
     } else if (x === board.length - 1) {
-      edge += Edge.Right;
+      edge += Edges.Right;
     }
     if (y === 0) {
-      edge += Edge.Bottom;
+      edge += Edges.Bottom;
     } else if (y === board.length - 1) {
-      edge += Edge.Top;
+      edge += Edges.Top;
     }
     return edge;
   }
@@ -318,7 +327,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
     const roadTile = square as RoadSquare;
     roadTile.edges = edges;
     road.push(roadTile);
-    const roadEdges = road.reduce((x, y) => x | y.edges, Edge.None);
+    const roadEdges = road.reduce((x, y) => x | y.edges, Edges.None);
     const isTopToBottom = (roadEdges & TopToBottom) === TopToBottom;
     const isLeftToRight = (roadEdges & LeftToRight) === LeftToRight;
     if (isTopToBottom || isLeftToRight) {

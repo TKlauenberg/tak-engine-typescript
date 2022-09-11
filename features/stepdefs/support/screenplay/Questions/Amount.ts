@@ -1,5 +1,5 @@
-import { Player as IPlayer } from '../../../../../lib';
 import { Question } from '@serenity-js/core';
+import { Player as IPlayer } from '../../../../../lib';
 import { Player } from './Player';
 
 export const AmountOf = {

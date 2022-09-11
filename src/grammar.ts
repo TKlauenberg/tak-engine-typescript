@@ -20,7 +20,8 @@ const otherTagsRegExp = {
   points: /^\d+$/,
   time: /^\d\d(:\d\d){1,2}$/,
   // eslint-disable-next-line max-len
-  clock: /^\d+min(\+\d+sec)$|^((((\d\s+)?\d\d?:)?\d\d?:)?\d\d?\s*)?(\+(((\d\s+)?\d\d?:)?\d\d?:)?\d\d?)?$/,
+  clock:
+    /^\d+min(\+\d+sec)$|^((((\d\s+)?\d\d?:)?\d\d?:)?\d\d?\s*)?(\+(((\d\s+)?\d\d?:)?\d\d?:)?\d\d?)?$/,
 } as const;
 export const requiredTags: Array<keyof typeof requiredTagsRegExp> = Object.keys(
   requiredTagsRegExp,

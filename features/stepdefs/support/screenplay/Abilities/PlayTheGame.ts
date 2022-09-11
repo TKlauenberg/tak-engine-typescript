@@ -4,12 +4,12 @@ import {
   Board,
   Game,
   GameOptions,
+  GameResult,
   parsePTN,
   Player,
   PlayerInfo,
   Square,
   Stone,
-  GameResult,
 } from '../../../../../lib';
 
 /**
@@ -45,7 +45,7 @@ export class PlayTheGame implements Ability {
   /**
    * @return {Promise<boolean>}
    */
-  getResult(): Promise<boolean|undefined> {
+  getResult(): Promise<boolean | undefined> {
     return new Promise((res) => res(this.#result));
   }
   /**
@@ -55,7 +55,7 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.tps));
+    return new Promise((res) => res(this.#game.tps));
   }
   /**
    * Create Game Instance from options
@@ -107,7 +107,7 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.board.getSquare(pos)));
+    return new Promise((res) => res(this.#game.board.getSquare(pos)));
   }
   /**
    *
@@ -124,7 +124,7 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.currentPlayer.player));
+    return new Promise((res) => res(this.#game.currentPlayer.player));
   }
   /**
    * @return {Promise<number>}
@@ -133,7 +133,7 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.moveCount));
+    return new Promise((res) => res(this.#game.moveCount));
   }
   /**
    * @return {Promise<number>}
@@ -142,7 +142,7 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.size));
+    return new Promise((res) => res(this.#game.size));
   }
   /**
    * @return {Promise<Board>}
@@ -151,12 +151,12 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.board));
+    return new Promise((res) => res(this.#game.board));
   }
   /**
    * @return {Promise<Error>}
    */
-  lastError(): Promise<Error|undefined> {
+  lastError(): Promise<Error | undefined> {
     return new Promise((res) => res(this.#error));
   }
   /**
@@ -179,7 +179,7 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.hasEnded));
+    return new Promise((res) => res(this.#game.hasEnded));
   }
   /**
    * @return {Promise<GameResult>}
@@ -188,6 +188,6 @@ export class PlayTheGame implements Ability {
     if (this.#game === undefined) {
       throw new Error('game not initialized');
     }
-    return new Promise((res) => res(this.#game!.result!));
+    return new Promise((res) => res(this.#game.result));
   }
 }

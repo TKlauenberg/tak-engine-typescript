@@ -21,5 +21,5 @@ export function gameOptionsFromTable(table: DataTable): GameOptions {
       }
     }
   }
-  return (options as unknown) as GameOptions;
+  return options as unknown as GameOptions;
 }
