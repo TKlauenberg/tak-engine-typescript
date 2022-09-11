@@ -63,7 +63,7 @@ export function parse(text: string): Result<Game> {
   try {
     game = new Game(gameOptions);
   } catch (err) {
-    return [false, err];
+    return [false, err as Error];
   }
   // todo parse comments
   // parse Moves

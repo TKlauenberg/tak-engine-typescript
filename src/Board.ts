@@ -120,7 +120,7 @@ export class Board extends Array<Square[]> implements ICloneable<Board> {
    */
   public static getRoads(board: Square[][]): RoadSquare[][] {
     const bottom = board[0];
-    // indexes from 1 to size - 2 so we don't get tiles multiple times
+    // indexes from 1 to size - 1 so we don't get tiles multiple times
     const indexes = Array.from(range(1, board.length - 1));
     const left = indexes.map((x) => board[x][0]);
     const borderTiles = bottom

@@ -99,7 +99,7 @@ function parseBoard(
   }
   // check for wrong size
   if (board.length !== boardSize || board.some((x) => x.length !== boardSize)) {
-    return [false, new Error(`wrong board size one one line`)];
+    return [false, new Error(`wrong board size on one line`)];
   }
   return [true, new Board(boardSize, board)];
 }

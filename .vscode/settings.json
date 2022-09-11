@@ -5,13 +5,8 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "src/**/*.js": true,
-    "src/**/*.js.map": true,
-    "src/**/*.d.ts": true,
-    "features/**/*.js": true,
-    "features/**/*.js.map": true
+    "**/*.d.ts": { "when": "$(basename).ts" },
+    "**/*.js": { "when": "$(basename).ts" },
+    "**/*.js.map": true
   },
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "cucumberautocomplete.syncfeatures": "features/**/*.feature",
-  "cucumberautocomplete.steps": ["features/stepdefs/**/*.ts"]
 }

@@ -145,7 +145,7 @@ export function excecuteMove<T extends Square[][]>(
     try {
       stones = square.take(move.amount);
     } catch (err) {
-      return [false, err];
+      return [false, err as Error];
     }
     for (let i = 0; i < move.drops.length; i++) {
       const dropSquare = Board.getNeighbourSquare(
