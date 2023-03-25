@@ -27,7 +27,8 @@ export class TriesToPlace extends Interaction {
    * @param {string} position
    */
   constructor(stoneType: StoneType, position: string) {
-    super();
+    // TODO: create move string representation
+    super(`tries to place a ${stoneType} stone at ${position}`);
     this.#stoneType = stoneType;
     this.#position = position;
   }

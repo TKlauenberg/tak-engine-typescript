@@ -21,7 +21,8 @@ export class ExecuteMoves extends Interaction {
    * @param {string[]} moves
    */
   constructor(moves: string[]) {
-    super();
+    // TODO: create string representation from moves
+    super('execute moves');
     this.#moves = moves;
   }
   /**

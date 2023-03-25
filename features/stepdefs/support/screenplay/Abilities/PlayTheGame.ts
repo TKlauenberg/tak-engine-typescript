@@ -1,4 +1,4 @@
-import { Ability, UsesAbilities } from '@serenity-js/core';
+import { Ability } from '@serenity-js/core';
 import {
   Action,
   Board,
@@ -15,15 +15,7 @@ import {
 /**
  * Domain class in order to interact with the tak-engine
  */
-export class PlayTheGame implements Ability {
-  /**
-   *
-   * @param {UsesAbilities} actor serenity actor
-   * @return {PlayTheGame}
-   */
-  static as(actor: UsesAbilities): PlayTheGame {
-    return actor.abilityTo(PlayTheGame);
-  }
+export class PlayTheGame extends Ability {
   #game?: Game;
   #error?: Error;
   #result?: boolean;

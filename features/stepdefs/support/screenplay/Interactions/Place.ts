@@ -31,7 +31,7 @@ export class Place extends Interaction {
    * @param {string} position
    */
   constructor(stoneType: StoneType, position: string) {
-    super();
+    super(`place a ${stoneType} stone at ${position}`);
     this.#stoneType = stoneType;
     this.#position = position;
   }

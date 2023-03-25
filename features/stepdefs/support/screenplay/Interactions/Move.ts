@@ -46,7 +46,8 @@ export class MoveStones extends Interaction {
     direction: Direction,
     drops: number[],
   ) {
-    super();
+    // TODO: create move string representation
+    super('move stones');
     this.#amount = amount;
     this.#position = position;
     this.#direction = direction;
